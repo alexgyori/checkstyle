@@ -1750,6 +1750,46 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
         public void addException(AuditEvent event, Throwable throwable) {
             // No code needed
         }
+
+        @Override
+        public void fileSetStarted(AuditEvent event) {
+            // No code needed
+        }
+
+        @Override
+        public void checkStarted(AuditEvent event) {
+            // No code needed
+        }
+
+        @Override
+        public void checkFinished(AuditEvent event) {
+            // No code needed
+        }
+
+        @Override
+        public void fileSetFinished(AuditEvent event) {
+            // No code needed
+        }
+
+        @Override
+        public void parseStarted(AuditEvent event) {
+            // No code needed
+        }
+
+        @Override
+        public void parseFinished(AuditEvent event) {
+            // No code needed
+        }
+
+        @Override
+        public void JavaDocParseStarted(AuditEvent event) {
+            // No code needed
+        }
+
+        @Override
+        public void JavaDocParseFinished(AuditEvent event) {
+            // No code needed
+        }
     }
 
     private static final class IndentComment {

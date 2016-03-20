@@ -48,6 +48,8 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
     /** The tab width for column reporting. */
     private int tabWidth = DEFAULT_TAB_WIDTH;
 
+    private MessageDispatcher messageDispatcher;
+
     /**
      * The class loader to load external classes. Not initialized as this must
      * be set by my creator.
@@ -262,5 +264,13 @@ public abstract class AbstractCheck extends AbstractViolationReporter {
                 getId(),
                 getClass(),
                 getCustomMessages().get(key)));
+    }
+
+    public void setMessageDispatcher(MessageDispatcher messageDispatcher) {
+        this.messageDispatcher = messageDispatcher;
+    }
+
+    protected final MessageDispatcher getMessageDispatcher() {
+        return messageDispatcher;
     }
 }
