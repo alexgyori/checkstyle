@@ -31,6 +31,7 @@ import static org.junit.Assert.fail;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
@@ -60,10 +61,11 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
                     Pattern.compile(".*?//indent:(\\d+)(?: ioffset:(\\d+))?"
                         + " exp:(>=)?(\\d+(?:,\\d+)*?)( warn)?$");
 
-    private static IndentComment[] getLinesWithWarnAndCheckComments(String aFileName,
+    private static IndentComment[][] getLinesWithWarnAndCheckComments(String aFileName,
             final int tabWidth)
                     throws IOException {
-        final List<IndentComment> result = new ArrayList<>();
+        final List<IndentComment> violations = new ArrayList<>();
+        final List<IndentComment> all = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(
                 new FileInputStream(aFileName), StandardCharsets.UTF_8))) {
             int lineNumber = 1;
@@ -90,8 +92,9 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
                                         lineNumber));
                     }
 
+                    all.add(warn);
                     if (warn.isWarning()) {
-                        result.add(warn);
+                        violations.add(warn);
                     }
                 }
                 else if (!line.isEmpty()) {
@@ -104,7 +107,8 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
                 lineNumber++;
             }
         }
-        return result.toArray(new IndentComment[result.size()]);
+        return new IndentComment[][] { all.toArray(new IndentComment[all.size()]),
+                violations.toArray(new IndentComment[violations.size()]) };
     }
 
     private static boolean isCommentConsistent(IndentComment comment) {
@@ -147,12 +151,30 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
                     String... expected)
                     throws Exception {
         final int tabWidth = Integer.parseInt(config.getAttribute("tabWidth"));
-        final IndentComment[] linesWithWarn =
+        final IndentComment[][] linesWithWarn =
                         getLinesWithWarnAndCheckComments(filePath, tabWidth);
-        verify(config, filePath, expected, linesWithWarn);
+        IndentAudit.ALL = false;
+
+        System.out.println("---------------------------------------");
+        System.out.println(filePath);
+        System.out.println();
+        
+        BufferedReader in = new BufferedReader(new FileReader(filePath));
+        String str;
+
+        List<String> list = new ArrayList<String>();
+        while((str = in.readLine()) != null){
+            list.add(str);
+        }
+        
+        IndentAudit.LINES = list.toArray(new String[0]);
+        verify(config, filePath, expected, linesWithWarn[1]);
         assertEquals("Expected warning count in UT does not match warn"
-                        + " comment count in input file", linesWithWarn.length,
+                        + " comment count in input file", linesWithWarn[1].length,
                         expected.length);
+        ((DefaultConfiguration) config).addAttribute("forceAllAsViolations", "true");
+        IndentAudit.ALL = true;
+        verify(config, filePath, null, linesWithWarn[0]);
     }
 
     private void verify(Configuration config, String filePath, String[] expected,
@@ -1698,6 +1720,7 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
     }
 
     private static final class IndentAudit implements AuditListener {
+        public static boolean ALL;
         private final IndentComment[] comments;
         private int position;
 
@@ -1725,6 +1748,9 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
             // No code needed
         }
 
+        public static String[] LINES;
+        private int lastLine = 0;
+
         @Override
         public void addError(AuditEvent event) {
             final int line = event.getLine();
@@ -1737,10 +1763,31 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
 
             final IndentComment comment = comments[position];
             position++;
+            final String expected;
 
+            if (ALL) {
+                expected = " - " + (comment.getIndent() + comment.getIndentOffset()) + " - " + comment.getExpectedWarning() + " - " + !comment.isExpectedNonStrict();
+
+                // temp method
+
+                if (lastLine + 1 != line) {
+                    //System.out.println("Lines: " + (lastLine + 1) + " to " + (line - 1));
+                    for (int i = lastLine; i < line - 1; i++) {
+                        if (!LINES[i].isEmpty() && !LINES[i].matches("^\\s*((//)|(/\\*)|(\\*/)|(\\*\\s+)|(import )).*")) {
+                            System.out.println("Line: " + (i + 1));
+                        }
+                    }
+                }
+                lastLine = line;
+                return;
+            } else {
+                expected = comment.getExpectedMessage();
+            }
+
+            assertEquals("violation on same line", comment.getLineNumber(), line);
             assertTrue(
                     "input expected warning #" + position + " at line " + comment.getLineNumber()
-                            + " to report '" + comment.getExpectedMessage() + "' but got instead: "
+                            + " to report '" + expected + "' but got instead: "
                             + line + ": " + message,
                     line == comment.getLineNumber()
                             && message.endsWith(comment.getExpectedMessage()));
@@ -1808,6 +1855,11 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
 
         public boolean isWarning() {
             return warning;
+        }
+
+        @Override
+        public String toString() {
+            return lineNumber + ": expected indent " + (indent + indentOffset) + " but got " + expectedWarning + " (" + !expectedNonStrict + ")";
         }
     }
 }

@@ -89,12 +89,13 @@ public class ObjectBlockHandler extends BlockParentHandler {
     @Override
     protected void checkRCurly() {
         final DetailAST rcurly = getRCurly();
-        final int rcurlyPos = expandedTabsColumnNo(rcurly);
-        final IndentLevel level = curlyIndent();
-        level.addAcceptedIndent(level.getFirstIndentLevel() + getLineWrappingIndentation());
 
-        if (!level.isAcceptable(rcurlyPos) && isOnStartOfLine(rcurly)) {
-            logError(rcurly, "rcurly", rcurlyPos, level);
+        if (isOnStartOfLine(rcurly)) {
+            final int rcurlyPos = expandedTabsColumnNo(rcurly);
+            final IndentLevel level = curlyIndent();
+            level.addAcceptedIndent(level.getFirstIndentLevel() + getLineWrappingIndentation());
+
+            testIndentation(rcurly.getLineNo(), "rcurly", false, true, rcurlyPos, level);
         }
     }
 

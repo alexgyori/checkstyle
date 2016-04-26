@@ -247,23 +247,22 @@ public class BaseCheckTestSupport {
         Collections.addAll(theFiles, processedFiles);
         final int errs = checker.process(theFiles);
 
-        // process each of the lines
-        final ByteArrayInputStream inputStream =
-                new ByteArrayInputStream(stream.toByteArray());
-        try (LineNumberReader lnr = new LineNumberReader(
-                new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+        if (expected != null) {
+            // process each of the lines
+            final ByteArrayInputStream inputStream =
+                    new ByteArrayInputStream(stream.toByteArray());
+            try (LineNumberReader lnr = new LineNumberReader(
+                    new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
-            final List<String> actuals = lnr.lines().limit(expected.length)
-                    .sorted().collect(Collectors.toList());
-            Arrays.sort(expected);
+                for (int i = 0; i < expected.length; i++) {
+                    final String expectedResult = messageFileName + ":" + expected[i];
+                    final String actual = lnr.readLine();
+                    assertEquals("error message " + i, expectedResult, actual);
+                }
 
-            for (int i = 0; i < expected.length; i++) {
-                final String expectedResult = messageFileName + ":" + expected[i];
-                assertEquals("error message " + i, expectedResult, actuals.get(i));
+                assertEquals("unexpected output: " + lnr.readLine(),
+                        expected.length, errs);
             }
-
-            assertEquals("unexpected output: " + lnr.readLine(),
-                    expected.length, errs);
         }
 
         checker.destroy();
