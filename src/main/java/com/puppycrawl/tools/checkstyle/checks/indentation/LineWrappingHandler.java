@@ -78,7 +78,8 @@ public class LineWrappingHandler {
                 lastNode);
 
         final DetailAST firstLineNode = firstNodesOnLines.get(firstNodesOnLines.firstKey());
-        if (firstLineNode.getType() == TokenTypes.AT) {
+        if (firstLineNode.getType() == TokenTypes.AT
+                && firstLineNode.getParent().getType() != TokenTypes.ANNOTATION_DEF) {
             checkAnnotationIndentation(firstLineNode, firstNodesOnLines, indentLevel);
         }
 

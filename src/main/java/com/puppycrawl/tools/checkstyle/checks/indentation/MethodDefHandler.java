@@ -91,8 +91,11 @@ public class MethodDefHandler extends BlockParentHandler {
         if (ast.getType() == TokenTypes.CTOR_DEF) {
             name = "ctor def";
         }
-        else {
+        else if (ast.getType() == TokenTypes.METHOD_DEF) {
             name = "method def";
+        }
+        else {
+            name = "annotation method def";
         }
         return name;
     }

@@ -586,6 +586,25 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
     }
 
     @Test
+    public void testValidAnnotationMethodWithChecker()
+        throws Exception {
+        final DefaultConfiguration checkConfig = createCheckConfig(IndentationCheck.class);
+
+        checkConfig.addAttribute("arrayInitIndent", "4");
+        checkConfig.addAttribute("basicOffset", "4");
+        checkConfig.addAttribute("braceAdjustment", "0");
+        checkConfig.addAttribute("caseIndent", "4");
+        checkConfig.addAttribute("forceStrictCondition", "false");
+        checkConfig.addAttribute("lineWrappingIndentation", "4");
+        checkConfig.addAttribute("tabWidth", "4");
+        checkConfig.addAttribute("throwsIndent", "4");
+        final String fileName = getPath("InputValidAnnotationMethodIndent.java");
+        final String[] expected = {
+        };
+        verifyWarns(checkConfig, fileName, expected);
+    }
+
+    @Test
     public void testInvalidMethodWithChecker()
         throws Exception {
         final DefaultConfiguration checkConfig = createCheckConfig(IndentationCheck.class);
@@ -635,6 +654,41 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
             "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
         };
         verifyWarns(checkConfig, fileName, expected, 0);
+    }
+
+    @Test
+    public void testInvalidAnnotationMethodWithChecker()
+        throws Exception {
+        final DefaultConfiguration checkConfig = createCheckConfig(IndentationCheck.class);
+
+        checkConfig.addAttribute("arrayInitIndent", "4");
+        checkConfig.addAttribute("basicOffset", "4");
+        checkConfig.addAttribute("braceAdjustment", "0");
+        checkConfig.addAttribute("caseIndent", "4");
+        checkConfig.addAttribute("forceStrictCondition", "false");
+        checkConfig.addAttribute("lineWrappingIndentation", "4");
+        checkConfig.addAttribute("tabWidth", "4");
+        checkConfig.addAttribute("throwsIndent", "4");
+        final String fileName = getPath("InputInvalidAnnotationMethodIndent.java");
+        final String[] expected = {
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+            "190: " + getCheckMessage(MSG_CHILD_ERROR, "method def", 12, 8),
+        };
+        verifyWarns(checkConfig, fileName, expected);
     }
 
     @Test
@@ -896,6 +950,34 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
             "188: " + getCheckMessage(MSG_ERROR, "class", 0, 4),
         };
         verifyWarns(checkConfig, fileName, expected, 0);
+    }
+
+    @Test
+    public void testInvalidAnnotationDefWithChecker()
+        throws Exception {
+        final DefaultConfiguration checkConfig = createCheckConfig(IndentationCheck.class);
+
+        checkConfig.addAttribute("arrayInitIndent", "4");
+        checkConfig.addAttribute("basicOffset", "4");
+        checkConfig.addAttribute("braceAdjustment", "0");
+        checkConfig.addAttribute("caseIndent", "4");
+        checkConfig.addAttribute("forceStrictCondition", "false");
+        checkConfig.addAttribute("lineWrappingIndentation", "4");
+        checkConfig.addAttribute("tabWidth", "4");
+        checkConfig.addAttribute("throwsIndent", "4");
+        final String fileName = getPath("InputInvalidAnnotationDefIndent.java");
+        final String[] expected = {
+            "3: " + getCheckMessage(MSG_ERROR, "annotation def at", 4, 0),
+            "4: " + getCheckMessage(MSG_ERROR, "annotation def at", 4, 0),
+            "5: " + getCheckMessage(MSG_ERROR, "annotation def lcurly", 4, 0),
+            "6: " + getCheckMessage(MSG_ERROR, "annotation def rcurly", 4, 0),
+            "7: " + getCheckMessage(MSG_ERROR, "annotation def at", 4, 0),
+            "8: " + getCheckMessage(MSG_ERROR, "InputInvalidAnnotationDefIndent3", 0, 8),
+            "9: " + getCheckMessage(MSG_ERROR, "annotation def lcurly", 4, 0),
+            "10: " + getCheckMessage(MSG_ERROR, "annotation def modifier", 4, 0),
+            "11: " + getCheckMessage(MSG_ERROR, "annotation def at", 4, 0),
+        };
+        verifyWarns(checkConfig, fileName, expected);
     }
 
     @Test
@@ -1255,6 +1337,27 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
         final String[] expected = {
             "49: " + getCheckMessage(MSG_ERROR, "class", 0, 4),
             "71: " + getCheckMessage(MSG_ERROR, "int", 8, 12),
+        };
+        verifyWarns(checkConfig, fileName, expected);
+    }
+
+    @Test
+    public void testValidAnnotationDefWithChecker()
+        throws Exception {
+        final DefaultConfiguration checkConfig = createCheckConfig(IndentationCheck.class);
+
+        checkConfig.addAttribute("arrayInitIndent", "4");
+        checkConfig.addAttribute("basicOffset", "4");
+        checkConfig.addAttribute("braceAdjustment", "0");
+        checkConfig.addAttribute("caseIndent", "4");
+        checkConfig.addAttribute("forceStrictCondition", "false");
+        checkConfig.addAttribute("lineWrappingIndentation", "4");
+        checkConfig.addAttribute("tabWidth", "4");
+        checkConfig.addAttribute("throwsIndent", "4");
+        final String fileName = getPath("InputValidAnnotationDefIndent.java");
+        final String[] expected = {
+            "9: " + getCheckMessage(MSG_ERROR, "InputInvalidAnnotationDefIndent3", 0, 4),
+            "13: " + getCheckMessage(MSG_ERROR, "@", 0, 4),
         };
         verifyWarns(checkConfig, fileName, expected);
     }
@@ -1655,7 +1758,8 @@ public class IndentationCheckTest extends BaseCheckTestSupport {
                     "input expected warning #" + position + " at line " + comment.getLineNumber()
                             + " to report '" + comment.getExpectedMessage() + "' but got instead: "
                             + line + ": " + message,
-                    message.endsWith(comment.getExpectedMessage()));
+                    line == comment.getLineNumber()
+                            && message.endsWith(comment.getExpectedMessage()));
         }
 
         @Override

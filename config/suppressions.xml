@@ -168,4 +168,5 @@
     <suppress checks="ExecutableStatementCount" files="Main\.java" lines="114"/>
     <suppress checks="CyclomaticComplexity" files="Main\.java"  lines="114"/>
     <suppress checks="JavaNCSS" files="Main\.java"  lines="114"/>
+    <suppress checks="ExecutableStatementCount" files="HandlerFactory\.java"  lines="48"/>
 </suppressions>

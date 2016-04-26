@@ -67,6 +67,14 @@ public class ClassDefHandler extends BlockParentHandler {
 
     @Override
     public void checkIndentation() {
+        final DetailAST at = getMainAst().findFirstToken(TokenTypes.AT);
+        if (at != null && isOnStartOfLine(at)) {
+            final int lineStart = getLineStart(at);
+            if (!getIndent().isAcceptable(lineStart)) {
+                logError(at, "at", lineStart);
+            }
+        }
+
         final DetailAST modifiers = getMainAst().findFirstToken(TokenTypes.MODIFIERS);
         if (modifiers.getChildCount() == 0) {
             final DetailAST ident = getMainAst().findFirstToken(TokenTypes.IDENT);
@@ -111,8 +119,11 @@ public class ClassDefHandler extends BlockParentHandler {
         else if (ast.getType() == TokenTypes.ENUM_DEF) {
             name = "enum def";
         }
-        else {
+        else if (ast.getType() == TokenTypes.INTERFACE_DEF) {
             name = "interface def";
+        }
+        else {
+            name = "annotation def";
         }
         return name;
     }
