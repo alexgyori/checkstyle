@@ -155,7 +155,7 @@ public abstract class Plant {
                         Annotations which allow the check to skip the method from validation.
                     </td>
                     <td><a href="property_types.html#stringSet">String Set</a></td>
-                    <td><code>Test, Before, After, BeforeClass, AfterClass</code></td>
+                    <td><code>Before, BeforeClass, Test, After, AfterClass</code></td>
                 </tr>
             </table>
         </subsection>
@@ -572,14 +572,14 @@ public class StringUtils // not final to allow subclassing
           <tr>
             <td>format</td>
             <td>pattern for exception class names</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^.*Exception$|^.*Error$|^.*Throwable$</code></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"^.*Exception$|^.*Error$|^.*Throwable$"</code></td>
           </tr>
           <tr>
             <td>extendedClassNameFormat</td>
             <td>pattern for extended class names</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^.*Exception$|^.*Error$|^.*Throwable$</code></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"^.*Exception$|^.*Error$|^.*Throwable$"</code></td>
           </tr>
         </table>
       </subsection>
@@ -922,8 +922,8 @@ public class Foo{
           <tr>
             <td>publicMemberPattern</td>
             <td>pattern for public members that should be ignored</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^serialVersionUID$</code></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"^serialVersionUID$"</code></td>
           </tr>
           <tr>
             <td>allowPublicFinalFields</td>
@@ -945,7 +945,7 @@ public class Foo{
             java.lang.Short, java.lang.Boolean, java.lang.Long, java.lang.Double, java.lang.Float,
             java.lang.StackTraceElement, java.math.BigInteger, java.math.BigDecimal, java.io.File,
             java.util.Locale, java.util.UUID, java.net.URL, java.net.URI,
-            java.net.Inet4Address, java.net.Inet6Address, java.net.InetSocketAddress,</td>
+            java.net.Inet4Address, java.net.Inet6Address, java.net.InetSocketAddress</td>
           </tr>
           <tr>
             <td>ignoreAnnotationCanonicalNames</td>

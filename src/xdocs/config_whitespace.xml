@@ -47,7 +47,7 @@ for (
           <tr>
             <td>option</td>
             <td>policy on how to pad an empty for iterator</td>
-            <td><a href="property_types.html#parenPad">pad policy</a></td>
+            <td><a href="property_types.html#parenPad">Pad Policy</a></td>
             <td><code>nospace</code></td>
           </tr>
         </table>
@@ -139,7 +139,7 @@ for (Iterator foo = very.long.line.iterator();
           <tr>
             <td>option</td>
             <td>policy on how to pad an empty for iterator</td>
-            <td><a href="property_types.html#parenPad">pad policy</a></td>
+            <td><a href="property_types.html#parenPad">Pad Policy</a></td>
             <td><code>nospace</code></td>
           </tr>
         </table>
@@ -468,7 +468,7 @@ class Foo
             <td>fileExtensions</td>
             <td>file type extension of files to process</td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td><code>{}</code></td>
+            <td>all files</td>
           </tr>
         </table>
       </subsection>
@@ -675,7 +675,7 @@ sort(list, Comparable::&lt;String&gt;compareTo);             // Method reference
             <td>option</td>
             <td>policy on how to pad method parameter</td>
             <td>
-              <a href="property_types.html#parenPad">pad policy</a>
+              <a href="property_types.html#parenPad">Pad Policy</a>
             </td>
             <td><code>nospace</code></td>
           </tr>
@@ -1185,7 +1185,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
             <td>option</td>
             <td>policy on how to wrap lines</td>
             <td>
-              <a href="property_types.html#wrapOp">wrap operator policy</a>
+              <a href="property_types.html#wrapOp">Wrap Operator Policy</a>
             </td>
             <td><code>nl</code></td>
           </tr>
@@ -1359,7 +1359,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
           <tr>
             <td>option</td>
             <td>policy on how to pad parentheses</td>
-            <td><a href="property_types.html#parenPad">pad policy</a></td>
+            <td><a href="property_types.html#parenPad">Pad Policy</a></td>
             <td><code>nospace</code></td>
           </tr>
           <tr>
@@ -1542,7 +1542,7 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
             <td>option</td>
             <td>policy on how to wrap lines</td>
             <td>
-              <a href="property_types.html#wrapOp">wrap operator policy</a>
+              <a href="property_types.html#wrapOp">Wrap Operator Policy</a>
             </td>
             <td><code>eol</code></td>
           </tr>
@@ -1784,7 +1784,7 @@ public long toMicros(long d) { return d / (C1 / C0); }
           <tr>
             <td>option</td>
             <td>policy on how to pad parentheses</td>
-            <td><a href="property_types.html#parenPad">pad policy</a></td>
+            <td><a href="property_types.html#parenPad">Pad Policy</a></td>
             <td><code>nospace</code></td>
           </tr>
         </table>

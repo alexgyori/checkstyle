@@ -25,13 +25,16 @@ import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
+import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.BitSet;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -40,6 +43,7 @@ import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -59,7 +63,17 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
+import com.puppycrawl.tools.checkstyle.api.Scope;
+import com.puppycrawl.tools.checkstyle.api.SeverityLevel;
+import com.puppycrawl.tools.checkstyle.checks.LineSeparatorOption;
+import com.puppycrawl.tools.checkstyle.checks.blocks.BlockOption;
+import com.puppycrawl.tools.checkstyle.checks.blocks.LeftCurlyOption;
+import com.puppycrawl.tools.checkstyle.checks.blocks.RightCurlyOption;
+import com.puppycrawl.tools.checkstyle.checks.imports.ImportOrderOption;
 import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
+import com.puppycrawl.tools.checkstyle.checks.whitespace.PadOption;
+import com.puppycrawl.tools.checkstyle.checks.whitespace.WrapOption;
+import com.puppycrawl.tools.checkstyle.utils.TokenUtils;
 
 public class XDocsPagesTest {
     private static final Path JAVA_SOURCES_DIRECTORY = Paths.get("src/main/java");
@@ -468,6 +482,8 @@ public class XDocsPagesTest {
         }
     }
 
+    private static final Set<String> stringTypes = new HashSet<>();
+
     private static void validatePropertySectionProperties(String fileName, String sectionName,
             Node subSection, Object instance, Set<String> properties) throws Exception {
         boolean skip = true;
@@ -511,6 +527,8 @@ public class XDocsPagesTest {
                         .replace("\r", "").replaceAll(" +", " ").trim();
                 final String actualValue = columns.get(3).getTextContent().replace("\n", "")
                         .replace("\r", "").replaceAll(" +", " ").trim();
+                String expectedTypeName = null;
+                String expectedValue = null;
 
                 Assert.assertFalse(fileName + " section '" + sectionName
                         + "' should have a type for " + propertyName, actualTypeName.isEmpty());
@@ -518,20 +536,241 @@ public class XDocsPagesTest {
                 final PropertyDescriptor descriptor = PropertyUtils.getPropertyDescriptor(instance,
                         propertyName);
                 final Class<?> clss = descriptor.getPropertyType();
-                final String expectedTypeName =
-                        getCheckPropertyExpectedTypeName(clss, instance, propertyName);
-                final String expectedValue = getCheckPropertyExpectedValue(clss, instance,
-                        propertyName);
+                Object value;
+
+//System.out.println(instance.getClass().getName() + " - " + propertyName);
+                if (("HeaderCheck".equals(instance.getClass().getSimpleName()) && ("header".equals(propertyName)))
+                        || ("RegexpHeaderCheck".equals(instance.getClass().getSimpleName()) && ("header".equals(propertyName)))) {
+                    value = "";
+                }
+                else if (("ImportControlCheck".equals(instance.getClass().getSimpleName()) && ("file".equals(propertyName) || "url".equals(propertyName)))) {
+                    value = null;
+                }
+                else if ("SuppressWarningsHolder".equals(instance.getClass().getSimpleName()) && ("aliasList".equals(propertyName))) {
+                    continue;
+                }
+                else if ("LeftCurlyCheck".equals(instance.getClass().getSimpleName()) && ("maxLineLength".equals(propertyName))) {
+                    value="80";
+                }
+                else if ("IllegalTokenTextCheck".equals(instance.getClass().getSimpleName()) && ("ignoreCase".equals(propertyName))) {
+                    value = false;
+                }
+                else {
+                    final Field field = getField(instance.getClass(), propertyName);
+
+                    value = field.get(instance);
+                }
+
+                if (clss == boolean.class) {
+                    expectedTypeName = "Boolean";
+                    expectedValue = value.toString();
+                }
+                else if (clss == int.class) {
+                    expectedTypeName = "Integer";
+                    if (value.equals(Integer.MAX_VALUE)) {
+                        expectedValue = "java.lang.Integer.MAX_VALUE";
+                    } else {
+                        expectedValue = value.toString();
+                    }
+                }
+                else if (clss == int[].class) {
+                    expectedTypeName = "Integer Set";
+                    expectedValue = Arrays.toString((int[])value).replace("[", "").replace("]", "");
+                    if (expectedValue.length() == 0) {
+                        expectedValue = "{}";
+                    }
+                }
+                else if (clss == double[].class) {
+                    expectedTypeName = "Number Set";
+                    expectedValue = Arrays.toString((double[])value).replace("[", "").replace("]", "");
+                    if (expectedValue.length() == 0) {
+                        expectedValue = "{}";
+                    }
+                }
+                else if (clss == String[].class) {
+                    if (propertyName.endsWith("Tokens") || propertyName.endsWith("Token")
+                            || "ignoreOccurrenceContext".equals(propertyName)
+                            || "target".equals(propertyName)
+                            || "memberModifiers".equals(propertyName)) {
+                        expectedTypeName = "subset of tokens TokenTypes";
+                    }
+                    else {
+                        expectedTypeName = "String Set";
+                    }
+
+                    if ("IllegalCatchCheck".equals(instance.getClass().getSimpleName()) && "illegalClassNames".equals(propertyName)) {
+                        expectedValue = "java.lang.Exception, java.lang.Throwable, java.lang.RuntimeException";
+                    }
+                    else if ("IllegalThrowsCheck".equals(instance.getClass().getSimpleName()) && "illegalClassNames".equals(propertyName)) {
+                        expectedValue = "java.lang.Throwable, java.lang.Error, java.lang.RuntimeException";
+                    }
+                    else if ("IllegalTypeCheck".equals(instance.getClass().getSimpleName()) && "illegalClassNames".equals(propertyName)) {
+                        expectedValue = "java.util.HashSet, java.util.HashMap, java.util.LinkedHashMap, java.util.LinkedHashSet, java.util.TreeSet, java.util.TreeMap";
+                    }
+                    else {
+                        if (value instanceof List) {
+                            if (((List<?>) value).size() > 0) {
+                                if (((List<?>) value).get(0) instanceof Number) {
+                                    value = ((List<?>) value).toArray(new Number[0]);
+                                }
+                                else {
+                                    value = ((List<?>) value).toArray(new String[0]);
+                                }
+                            } else {
+                                value = new String[0];
+                            }
+                        } else if (value instanceof Set)
+                            value = ((Set<?>) value).toArray(new String[0]);
+                        else if (value instanceof BitSet) {
+                            final List<Integer> list = new ArrayList<>();
+
+                            for (int i = 0; i < ((BitSet)value).size(); i++) {
+                                if (((BitSet)value).get(i))
+                                    list.add(i);
+                            }
+
+                            value = list.toArray(new Integer[0]);
+                        } else if (value == null)
+                            value = new String[0];
+
+                        if (Array.getLength(value) > 0) {
+                            if (Array.get(value, 0) instanceof Pattern) {
+                                final String[] newArray = new String[Array.getLength(value)];
+
+                                for (int i = 0; i < newArray.length; i++) {
+                                    newArray[i] = ((Pattern) Array.get(value, i)).pattern();
+                                }
+
+                                value = newArray;
+                            } else if (Array.get(value, 0)instanceof Number) {
+                                final String[] newArray = new String[Array.getLength(value)];
+
+                                for (int i = 0; i < newArray.length; i++) {
+                                    newArray[i] = TokenUtils.getTokenName(((Number)Array.get(value, i)).intValue());
+                                }
+
+                                value = newArray;
+                            }
+
+                            expectedValue = Arrays.toString((String[]) value).replace("[", "")
+                                    .replace("]", "");
+                        }
+                        else {
+                            expectedValue = "";
+                        }
+
+                        if (expectedValue.length() == 0) {
+                            if ("fileExtensions".equals(propertyName)) {
+                                expectedValue = "all files";
+                            }
+                            else {
+                                expectedValue = "{}";
+                            }
+                        }
+                    }
+                }
+                else if (clss == String.class || clss == File.class || clss == URI.class) {
+                    stringTypes.add(actualTypeName);
+                    System.out.println(instance.getClass().getSimpleName() + " - " + propertyName + " - " + actualTypeName + " - " + actualValue);
+                    System.out.println("--- " + stringTypes);
+                    if ("String".equalsIgnoreCase(actualTypeName) || "String literal".equals(actualTypeName)) {
+                        expectedTypeName = "String";
+
+                        if ("DescendantTokenCheck".equals(instance.getClass().getSimpleName()) && "minimumMessage".equals(propertyName)) {
+                            expectedValue = "\"descendant.token.min\" or \"descendant.token.sum.min\"";
+                        }
+                        else if ("DescendantTokenCheck".equals(instance.getClass().getSimpleName()) && "maximumMessage".equals(propertyName)) {
+                            expectedValue = "\"descendant.token.max\" or \"descendant.token.sum.max\"";
+                        } else {
+                            if (value != null) {
+                                if (value instanceof List)
+                                    expectedValue = '"' + value.toString().substring(1, value.toString().length() - 1) + '"';
+                                else
+                                    expectedValue = '"' + value.toString() + '"';
+
+                                if ("\"\"".equals(expectedValue)) {
+                                    expectedValue = expectedValue + " (empty)";
+                                }
+                            }
+                        }
+                    } else if ("Regular Expression".equalsIgnoreCase(actualTypeName)) {
+                        expectedTypeName = "Regular Expression";
+                        if (value != null) {
+                            expectedValue = '"' + value.toString().replace("\n", "\\n")
+                                    .replace("\t", "\\t").replace("\r", "\\r").replace("\f", "\\f") + '"';
+                        }
+
+                        if ("\"$^\"".equals(expectedValue)) {
+                            expectedValue = expectedValue + " (empty)";
+                        }
+                    } else {
+                        System.out.println("unhandled");
+                    }
+                }
+                else if (clss == Pattern.class) {
+                    expectedTypeName = "Regular Expression";
+                    if (value != null) {
+                        expectedValue = '"' + value.toString().replace("\n", "\\n")
+                                .replace("\t", "\\t").replace("\r", "\\r").replace("\f", "\\f") + '"';
+                    }
+
+                    if ("\"$^\"".equals(expectedValue)) {
+                        expectedValue = expectedValue + " (empty)";
+                    }
+                }
+                else if (clss == PadOption.class) {
+                    expectedTypeName = "Pad Policy";
+                    expectedValue = value.toString().toLowerCase(Locale.ENGLISH);
+                }
+                else if (clss == WrapOption.class) {
+                    expectedTypeName = "Wrap Operator Policy";
+                    expectedValue = value.toString().toLowerCase(Locale.ENGLISH);
+                }
+                else if (clss == LineSeparatorOption.class) {
+                    expectedTypeName = "Line Separator Policy";
+                    expectedValue = value.toString().toLowerCase(Locale.ENGLISH);
+                }
+                else if (clss == ImportOrderOption.class) {
+                    expectedTypeName = "Import Order Policy";
+                    expectedValue = value.toString().toLowerCase(Locale.ENGLISH);
+                }
+                else if (clss == RightCurlyOption.class) {
+                    expectedTypeName = "Right Curly Brace Policy";
+                    expectedValue = value.toString().toLowerCase(Locale.ENGLISH);
+                }
+                else if (clss == LeftCurlyOption.class) {
+                    expectedTypeName = "Left Curly Brace Policy";
+                    expectedValue = value.toString().toLowerCase(Locale.ENGLISH);
+                }
+                else if (clss == SeverityLevel.class) {
+                    expectedTypeName = "Severity";
+                    expectedValue = value.toString().toLowerCase(Locale.ENGLISH);
+                }
+                else if (clss == BlockOption.class) {
+                    expectedTypeName = "Block Policy";
+                    expectedValue = value.toString().toLowerCase(Locale.ENGLISH);
+                }
+                else if (clss == Scope.class) {
+                    expectedTypeName = "Scope Policy";
+                    if (value != null) {
+                        expectedValue = value.toString().toLowerCase(Locale.ENGLISH);
+                    }
+                }
+                else {
+                    Assert.fail("Unknown property type: " + clss.getSimpleName());
+                }
 
                 if (expectedTypeName != null) {
+                    if (expectedValue == null) {
+                        expectedValue = "null";
+                    }
+
                     Assert.assertEquals(fileName + " section '" + sectionName
                             + "' should have the type for " + propertyName, expectedTypeName,
                             actualTypeName);
-                    if (expectedValue != null) {
-                        Assert.assertEquals(fileName + " section '" + sectionName
-                                + "' should have the value for " + propertyName, expectedValue,
-                                actualValue);
-                    }
+                    Assert.assertEquals(fileName + " section '" + sectionName
+                            + "' should have the value for " + propertyName, expectedValue,
+                            actualValue);
                 }
             }
         }
@@ -574,101 +813,15 @@ public class XDocsPagesTest {
                         .replaceAll("\\s+", " ").trim());
     }
 
-    private static String getCheckPropertyExpectedTypeName(Class<?> clss, Object instance,
-            String propertyName) {
-        final String instanceName = instance.getClass().getSimpleName();
-        String result = null;
-
-        if (clss == boolean.class) {
-            result = "Boolean";
+    private static Field getField(Class<?> clss, String propertyName) throws Exception {
+        try {
+            Field result = clss.getDeclaredField(propertyName);
+            result.setAccessible(true);
+            return result;
         }
-        else if (clss == int.class) {
-            result = "Integer";
+        catch (NoSuchFieldException e) {
+            return getField(clss.getSuperclass(), propertyName);
         }
-        else if (clss == int[].class) {
-            result = "Integer Set";
-        }
-        else if (clss == double[].class) {
-            result = "Number Set";
-        }
-        else if (clss == String[].class) {
-            if (propertyName.endsWith("Tokens") || propertyName.endsWith("Token")
-                    || "AtclauseOrderCheck".equals(instanceName) && "target".equals(propertyName)
-                    || "MultipleStringLiteralsCheck".equals(instanceName)
-                            && "ignoreOccurrenceContext".equals(propertyName)) {
-                result = "subset of tokens TokenTypes";
-            }
-            else {
-                result = "String Set";
-            }
-        }
-        else if (clss != String.class) {
-            Assert.fail("Unknown property type: " + clss.getSimpleName());
-        }
-
-        if ("SuppressWarningsHolder".equals(instanceName)) {
-            result = result + " in a format of comma separated attribute=value entries. The "
-                    + "attribute is the fully qualified name of the Check and value is its alias.";
-        }
-
-        return result;
-    }
-
-    private static String getCheckPropertyExpectedValue(Class<?> clss, Object instance,
-            String propertyName) throws Exception {
-        final Field field = getField(instance.getClass(), propertyName);
-        String result = null;
-
-        if (field != null) {
-            final Object value = field.get(instance);
-
-            if (clss == boolean.class) {
-                result = value.toString();
-            }
-            else if (clss == int.class) {
-                if (value.equals(Integer.MAX_VALUE)) {
-                    result = "java.lang.Integer.MAX_VALUE";
-                }
-                else {
-                    result = value.toString();
-                }
-            }
-            else if (clss == int[].class) {
-                result = Arrays.toString((int[]) value).replace("[", "").replace("]", "");
-                if (result.isEmpty()) {
-                    result = "{}";
-                }
-            }
-            else if (clss == double[].class) {
-                result = Arrays.toString((double[]) value).replace("[", "").replace("]", "")
-                        .replace(".0", "");
-                if (result.isEmpty()) {
-                    result = "{}";
-                }
-            }
-
-            if (clss != String.class && clss != String[].class && result == null) {
-                result = "null";
-            }
-        }
-
-        return result;
-    }
-
-    private static Field getField(Class<?> clss, String propertyName) {
-        Field result = null;
-
-        if (clss != null) {
-            try {
-                result = clss.getDeclaredField(propertyName);
-                result.setAccessible(true);
-            }
-            catch (NoSuchFieldException ex) {
-                result = getField(clss.getSuperclass(), propertyName);
-            }
-        }
-
-        return result;
     }
 
     private static void validateErrorSection(String fileName, String sectionName, Node subSection,

@@ -51,7 +51,7 @@
               automatically excluded.
             </td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td><code>empty list</code></td>
+            <td>{}</td>
           </tr>
           <tr>
             <td>allowClassImports</td>
@@ -168,7 +168,7 @@
               individually like <code>java.lang.Math.PI</code>.
             </td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td><code>empty list</code></td>
+            <td>{}</td>
           </tr>
         </table>
       </subsection>
@@ -332,26 +332,26 @@ import com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck;
           <tr>
             <td>customImportOrderRules</td>
             <td>List of order declaration customizing by user.</td>
-            <td><a href="property_types.html#string">string</a></td>
-            <td><code>null</code></td>
+            <td><a href="property_types.html#string">String</a></td>
+            <td><code>""</code> (empty)</td>
           </tr>
           <tr>
             <td>standardPackageRegExp</td>
             <td>RegExp for STANDARD_JAVA_PACKAGE group imports.</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^(java|javax)\.</code></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"^(java|javax)\."</code></td>
           </tr>
           <tr>
             <td>thirdPartyPackageRegExp</td>
             <td>RegExp for THIRDPARTY_PACKAGE group imports.</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>.*</code></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>".*"</code></td>
           </tr>
           <tr>
             <td>specialImportsRegExp</td>
             <td>RegExp for SPECIAL_IMPORTS group imports.</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^$</code></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"^$"</code></td>
           </tr>
           <tr>
             <td>separateLineBetweenGroups</td>
@@ -708,7 +708,7 @@ import android.*;
             <td>
               name of the file containing the import control configuration.
             </td>
-            <td><a href="property_types.html#string">string</a></td>
+            <td><a href="property_types.html#string">String</a></td>
             <td><code>null</code></td>
           </tr>
           <tr>
@@ -716,7 +716,7 @@ import android.*;
             <td>
               URL of the file containing the import control configuration.
             </td>
-            <td><a href="property_types.html#string">string</a></td>
+            <td><a href="property_types.html#string">String</a></td>
             <td><code>null</code></td>
           </tr>
         </table>
@@ -916,7 +916,7 @@ import android.*;
           <tr>
             <td>option</td>
             <td>policy on the relative order between regular imports and static imports</td>
-            <td><a href="property_types.html#importOrder">import order</a></td>
+            <td><a href="property_types.html#importOrder">Import Order Policy</a></td>
             <td><code>under</code></td>
           </tr>
           <tr>
@@ -927,7 +927,7 @@ import android.*;
               in forward slashes (e.g. <code>/regexp/</code>)
             </td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td><code>empty list</code></td>
+            <td>{}</td>
           </tr>
           <tr>
             <td>ordered</td>

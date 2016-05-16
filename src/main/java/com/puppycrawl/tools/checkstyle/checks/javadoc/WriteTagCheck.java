@@ -94,7 +94,7 @@ public class WriteTagCheck
     /** Regexp to match tag content. */
     private String tagFormat;
     /** The severity level of found tag reports. */
-    private SeverityLevel tagSeverityLevel = SeverityLevel.INFO;
+    private SeverityLevel tagSeverity = SeverityLevel.INFO;
 
     /**
      * Sets the tag to check.
@@ -109,20 +109,19 @@ public class WriteTagCheck
      * Set the tag format.
      * @param format a {@code String} value
      */
-    public void setTagFormat(String format) {
-        tagFormat = format;
-        tagFormatRegExp = CommonUtils.createPattern(format);
+    public void setTagFormat(Pattern pattern) {
+        tagFormat = pattern.pattern();
+        tagFormatRegExp = pattern;
     }
 
     /**
-     * Sets the tag severity level.  The string should be one of the names
-     * defined in the {@code SeverityLevel} class.
+     * Sets the tag severity level.
      *
      * @param severity  The new severity level
      * @see SeverityLevel
      */
-    public final void setTagSeverity(String severity) {
-        tagSeverityLevel = SeverityLevel.getInstance(severity);
+    public final void setTagSeverity(SeverityLevel severity) {
+        tagSeverity = severity;
     }
 
     @Override
@@ -206,7 +205,7 @@ public class WriteTagCheck
      */
     protected final void logTag(int line, String tagName, String tagValue) {
         final String originalSeverity = getSeverity();
-        setSeverity(tagSeverityLevel.getName());
+        setSeverity(tagSeverity.getName());
 
         log(line, MSG_WRITE_TAG, tagName, tagValue);
 

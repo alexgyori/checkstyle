@@ -19,10 +19,6 @@
 
 package com.puppycrawl.tools.checkstyle.checks.blocks;
 
-import java.util.Locale;
-
-import org.apache.commons.beanutils.ConversionException;
-
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.Scope;
@@ -115,16 +111,10 @@ public class RightCurlyCheck extends AbstractCheck {
 
     /**
      * Set the option to enforce.
-     * @param optionStr string to decode option from
-     * @throws ConversionException if unable to decode
+     * @param option a right curly option.
      */
-    public void setOption(String optionStr) {
-        try {
-            option = RightCurlyOption.valueOf(optionStr.trim().toUpperCase(Locale.ENGLISH));
-        }
-        catch (IllegalArgumentException iae) {
-            throw new ConversionException("unable to parse " + optionStr, iae);
-        }
+    public void setOption(RightCurlyOption option) {
+        this.option = option;
     }
 
     /**

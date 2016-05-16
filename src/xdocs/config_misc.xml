@@ -543,7 +543,7 @@ String unitAbbrev = "\u03bc\u03bc\u03bc";
              subset of tokens
              <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html">TokenTypes</a>
             </td>
-            <td>empty set</td>
+            <td><code>{}</code></td>
           </tr>
           <tr>
             <td>minimumDepth</td>
@@ -582,13 +582,13 @@ String unitAbbrev = "\u03bc\u03bc\u03bc";
             <td>minimumMessage</td>
             <td>error message when the minimum count is not reached</td>
             <td><a href="property_types.html#string">String</a></td>
-            <td>&quot;descendant.token.min&quot;</td>
+            <td><code>&quot;descendant.token.min&quot;</code> or <code>&quot;descendant.token.sum.min&quot;</code></td>
           </tr>
           <tr>
             <td>maximumMessage</td>
             <td>error message when the maximum count is exceeded</td>
             <td><a href="property_types.html#string">String</a></td>
-            <td>&quot;descendant.token.max&quot;</td>
+            <td><code>&quot;descendant.token.max&quot;</code> or <code>&quot;descendant.token.sum.max&quot;</code></td>
           </tr>
         </table>
       </subsection>
@@ -1177,12 +1177,8 @@ void foo(String aFooString,
           <tr>
             <td>lineSeparator</td>
             <td>type of line separator</td>
-            <td>
-              One of &quot;system&quot; (system default),
-              &quot;crlf&quot; (Windows-style), &quot;cr&quot;
-              (Mac-style), &quot;lf&quot; (Unix-style) and &quot;lf_cr_crlf&quot; (lf, cr or crlf).
-            </td>
-            <td>&quot;system&quot;</td>
+            <td><a href="property_types.html#lineSeparator">Line Separator Policy</a></td>
+            <td>system</td>
           </tr>
           <tr>
             <td>fileExtensions</td>
@@ -1343,8 +1339,8 @@ void foo(String aFooString,
           <tr>
             <td>format</td>
             <td>Pattern to match comments against</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>TODO:</code></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"TODO:"</code></td>
           </tr>
         </table>
       </subsection>
@@ -1490,16 +1486,16 @@ d = e / f;        // Another comment for this line
           <tr>
             <td>format</td>
             <td>pattern for strings allowed before the comment</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^[\\s\\}\\);]*$</code></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"^[\s\});]*$"</code></td>
           </tr>
           <tr>
             <td>legalComment</td>
             <td>pattern for text allowed in trailing comments. (This
                 pattern will not be applied to multiline comments and the text of the
                 comment will be trimmed before matching.)</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td>(not set)</td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>null</code></td>
           </tr>
         </table>
       </subsection>
@@ -1611,15 +1607,15 @@ messages.properties: Key 'ok' missing.
               do not have the extension <code>.properties</code>
             </td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td><code>properties</code></td>
+            <td><code>.properties</code></td>
           </tr>
           <tr>
             <td>baseName</td>
             <td><a href="https://docs.oracle.com/javase/7/docs/api/java/util/ResourceBundle.html">
               Base name</a> of resource bundles which contain message resources. It helps
               the check to distinguish config and localization resources.</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^messages.*$</code></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"^messages.*$"</code></td>
           </tr>
           <tr>
             <td>requiredTranslations</td>
@@ -1636,7 +1632,7 @@ messages.properties: Key 'ok' missing.
               will rise violation that the language code is incorrect.
             </td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td><code>empty String Set</code></td>
+            <td><code>{}</code></td>
           </tr>
         </table>
       </subsection>
@@ -1772,8 +1768,8 @@ messages_home_fr_CA_UNIX.properties
             <td>excludedClasses</td>
             <td>Pattern for qualified names of classes which are allowed
             to have a main method.</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^$</code></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"^$"</code></td>
           </tr>
         </table>
       </subsection>
@@ -1858,7 +1854,7 @@ messages_home_fr_CA_UNIX.properties
             <td>fileExtensions</td>
             <td>file type extension of the files to check.</td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td>properties</td>
+            <td>.properties</td>
           </tr>
         </table>
       </subsection>

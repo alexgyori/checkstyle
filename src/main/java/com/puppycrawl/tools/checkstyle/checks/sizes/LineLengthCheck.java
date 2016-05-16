@@ -96,7 +96,7 @@ public class LineLengthCheck extends AbstractCheck {
      * Creates a new {@code LineLengthCheck} instance.
      */
     public LineLengthCheck() {
-        setIgnorePattern("^$");
+        setIgnorePattern(Pattern.compile("^$"));
     }
 
     @Override
@@ -140,9 +140,9 @@ public class LineLengthCheck extends AbstractCheck {
 
     /**
      * Set the ignore pattern.
-     * @param format a {@code String} value
+     * @param pattern a pattern.
      */
-    public final void setIgnorePattern(String format) {
-        ignorePattern = CommonUtils.createPattern(format);
+    public final void setIgnorePattern(Pattern pattern) {
+        ignorePattern = pattern;
     }
 }

@@ -20,12 +20,15 @@
 package com.puppycrawl.tools.checkstyle.api;
 
 import java.beans.PropertyDescriptor;
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.net.URI;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConversionException;
@@ -42,6 +45,15 @@ import org.apache.commons.beanutils.converters.FloatConverter;
 import org.apache.commons.beanutils.converters.IntegerConverter;
 import org.apache.commons.beanutils.converters.LongConverter;
 import org.apache.commons.beanutils.converters.ShortConverter;
+
+import com.puppycrawl.tools.checkstyle.checks.LineSeparatorOption;
+import com.puppycrawl.tools.checkstyle.checks.blocks.BlockOption;
+import com.puppycrawl.tools.checkstyle.checks.blocks.LeftCurlyOption;
+import com.puppycrawl.tools.checkstyle.checks.blocks.RightCurlyOption;
+import com.puppycrawl.tools.checkstyle.checks.imports.ImportOrderOption;
+import com.puppycrawl.tools.checkstyle.checks.whitespace.PadOption;
+import com.puppycrawl.tools.checkstyle.checks.whitespace.WrapOption;
+import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
  * A Java Bean that implements the component lifecycle interfaces by
@@ -96,6 +108,18 @@ public class AutomaticBean
         cub.register(new ShortConverter(), Short.class);
         cub.register(new ArrayConverter(short[].class, new ShortConverter()),
             short[].class);
+        cub.register(new PatternConverter(), Pattern.class);
+        cub.register(new FileConverter(), File.class);
+        cub.register(new UriConverter(), URI.class);
+        cub.register(new PadOptionConverter(), PadOption.class);
+        cub.register(new WrapOptionConverter(), WrapOption.class);
+        cub.register(new LineSeparatorConverter(), LineSeparatorOption.class);
+        cub.register(new ImportOrderConverter(), ImportOrderOption.class);
+        cub.register(new RightCurlyConverter(), RightCurlyOption.class);
+        cub.register(new LeftCurlyConverter(), LeftCurlyOption.class);
+        cub.register(new ServerityLevelConverter(), SeverityLevel.class);
+        cub.register(new BlockOptionConverter(), BlockOption.class);
+        cub.register(new ScopeConverter(), Scope.class);
         cub.register(new RelaxedStringArrayConverter(), String[].class);
 
         // BigDecimal, BigInteger, Class, Date, String, Time, TimeStamp
@@ -238,6 +262,179 @@ public class AutomaticBean
         if (childConf != null) {
             throw new CheckstyleException(childConf.getName() + " is not allowed as a child in "
                     + getConfiguration().getName());
+        }
+    }
+
+    /** A converter that converts strings to patterns. */
+    private static class PatternConverter implements Converter {
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        @Override
+        public Object convert(Class type, Object value) {
+            return CommonUtils.createPattern(value.toString());
+        }
+    }
+
+    /** A converter that converts strings to file. */
+    private static class FileConverter implements Converter {
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        @Override
+        public Object convert(Class type, Object value) {
+            final String name = value.toString();
+            if (!CommonUtils.isBlank(name)) {
+                return new File(name);
+            }
+
+            return null;
+        }
+    }
+
+    /** A converter that converts strings to uri. */
+    private static class UriConverter implements Converter {
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        @Override
+        public Object convert(Class type, Object value) {
+            final String url = value.toString();
+
+            if (!CommonUtils.isBlank(url)) {
+                try {
+                    return URI.create(url);
+                }
+                catch (final IllegalArgumentException ex) {
+                    throw new ConversionException("Syntax error in url " + url, ex);
+                }
+            }
+
+            return null;
+        }
+    }
+
+    /** A converter that converts strings to pad options. */
+    private static class PadOptionConverter implements Converter {
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        @Override
+        public Object convert(Class type, Object value) {
+            try {
+                return PadOption.valueOf(value.toString().trim().toUpperCase(Locale.ENGLISH));
+            }
+            catch (IllegalArgumentException iae) {
+                throw new ConversionException("unable to parse " + value.toString(), iae);
+            }
+        }
+    }
+
+    /** A converter that converts strings to wrap options. */
+    private static class WrapOptionConverter implements Converter {
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        @Override
+        public Object convert(Class type, Object value) {
+            try {
+                return WrapOption.valueOf(value.toString().trim().toUpperCase(Locale.ENGLISH));
+            }
+            catch (IllegalArgumentException iae) {
+                throw new ConversionException("unable to parse " + value.toString(), iae);
+            }
+        }
+    }
+
+    /** A converter that converts strings to line separator options. */
+    private static class LineSeparatorConverter implements Converter {
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        @Override
+        public Object convert(Class type, Object value) {
+            try {
+                return LineSeparatorOption.valueOf(value.toString().trim()
+                        .toUpperCase(Locale.ENGLISH));
+            }
+            catch (IllegalArgumentException iae) {
+                throw new ConversionException("unable to parse " + value.toString(), iae);
+            }
+        }
+    }
+
+    /** A converter that converts strings to import order options. */
+    private static class ImportOrderConverter implements Converter {
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        @Override
+        public Object convert(Class type, Object value) {
+            try {
+                return ImportOrderOption.valueOf(value.toString().trim()
+                        .toUpperCase(Locale.ENGLISH));
+            }
+            catch (IllegalArgumentException iae) {
+                throw new ConversionException("unable to parse " + value.toString(), iae);
+            }
+        }
+    }
+
+    /** A converter that converts strings to right curly options. */
+    private static class RightCurlyConverter implements Converter {
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        @Override
+        public Object convert(Class type, Object value) {
+            try {
+                return RightCurlyOption
+                        .valueOf(value.toString().trim().toUpperCase(Locale.ENGLISH));
+            }
+            catch (IllegalArgumentException iae) {
+                throw new ConversionException("unable to parse " + value.toString(), iae);
+            }
+        }
+    }
+
+    /** A converter that converts strings to left curly options. */
+    private static class LeftCurlyConverter implements Converter {
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        @Override
+        public Object convert(Class type, Object value) {
+            try {
+                return LeftCurlyOption
+                        .valueOf(value.toString().trim().toUpperCase(Locale.ENGLISH));
+            }
+            catch (IllegalArgumentException iae) {
+                throw new ConversionException("unable to parse " + value.toString(), iae);
+            }
+        }
+    }
+
+    /** A converter that converts strings to severity level. */
+    private static class ServerityLevelConverter implements Converter {
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        @Override
+        public Object convert(Class type, Object value) {
+            try {
+                return SeverityLevel.valueOf(value.toString().trim().toUpperCase(Locale.ENGLISH));
+            }
+            catch (IllegalArgumentException iae) {
+                throw new ConversionException("unable to parse " + value.toString(), iae);
+            }
+        }
+    }
+
+    /** A converter that converts strings to block options. */
+    private static class BlockOptionConverter implements Converter {
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        @Override
+        public Object convert(Class type, Object value) {
+            try {
+                return BlockOption.valueOf(value.toString().trim().toUpperCase(Locale.ENGLISH));
+            }
+            catch (IllegalArgumentException iae) {
+                throw new ConversionException("unable to parse " + value.toString(), iae);
+            }
+        }
+    }
+
+    /** A converter that converts strings to scope. */
+    private static class ScopeConverter implements Converter {
+        @SuppressWarnings({"unchecked", "rawtypes"})
+        @Override
+        public Object convert(Class type, Object value) {
+            try {
+                return Scope.valueOf(value.toString().trim().toUpperCase(Locale.ENGLISH));
+            }
+            catch (IllegalArgumentException iae) {
+                throw new ConversionException("unable to parse " + value.toString(), iae);
+            }
         }
     }
 

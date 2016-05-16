@@ -32,7 +32,6 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.ExternalResourceHolder;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
 
 /**
  * Check that controls what packages can be imported in each package. Useful
@@ -149,18 +148,18 @@ public class ImportControlCheck extends AbstractCheck implements ExternalResourc
     /**
      * Set the name for the file containing the import control
      * configuration. It will cause the file to be loaded.
-     * @param name the name of the file to load.
+     * @param file the file to load.
      * @throws ConversionException on error loading the file.
      */
-    public void setFile(final String name) {
+    public void setFile(File file) {
         // Handle empty param
-        if (!CommonUtils.isBlank(name)) {
+        if (file != null) {
+            fileLocation = file.getAbsolutePath();
             try {
-                root = ImportControlLoader.load(new File(name).toURI());
-                fileLocation = name;
+                root = ImportControlLoader.load(file.toURI());
             }
             catch (final CheckstyleException ex) {
-                throw new ConversionException(UNABLE_TO_LOAD + name, ex);
+                throw new ConversionException(UNABLE_TO_LOAD + fileLocation, ex);
             }
         }
     }
@@ -168,25 +167,18 @@ public class ImportControlCheck extends AbstractCheck implements ExternalResourc
     /**
      * Set the parameter for the url containing the import control
      * configuration. It will cause the url to be loaded.
-     * @param url the url of the file to load.
+     * @param uri the uri of the file to load.
      * @throws ConversionException on error loading the file.
      */
-    public void setUrl(final String url) {
+    public void setUrl(URI uri) {
         // Handle empty param
-        if (!CommonUtils.isBlank(url)) {
-            final URI uri;
-            try {
-                uri = URI.create(url);
-            }
-            catch (final IllegalArgumentException ex) {
-                throw new ConversionException("Syntax error in url " + url, ex);
-            }
+        if (uri != null) {
+            fileLocation = uri.toString();
             try {
                 root = ImportControlLoader.load(uri);
-                fileLocation = url;
             }
             catch (final CheckstyleException ex) {
-                throw new ConversionException(UNABLE_TO_LOAD + url, ex);
+                throw new ConversionException(UNABLE_TO_LOAD + fileLocation, ex);
             }
         }
     }

@@ -80,15 +80,15 @@
           <tr>
             <td>format</td>
             <td>pattern</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>$^</code> (empty)</td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"$^"</code> (empty)</td>
           </tr>
           <tr>
             <td>message</td>
             <td>message which is used to notify about violations,
               if empty then the default (hard-coded) message is used.</td>
             <td><a href="property_types.html#string">String</a></td>
-            <td><code>&quot;&quot;</code>(empty)</td>
+            <td><code>&quot;&quot;</code> (empty)</td>
           </tr>
           <tr>
             <td>illegalPattern</td>
@@ -504,15 +504,15 @@
           <tr>
             <td>format</td>
             <td>illegal pattern</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^$</code> (empty)</td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>&quot;$.&quot;</code></td>
           </tr>
           <tr>
             <td>message</td>
             <td>message which is used to notify about violations,
             if empty then default(hard-coded) message is used.</td>
             <td><a href="property_types.html#string">String</a></td>
-            <td><code>&quot;&quot;</code>(empty)</td>
+            <td><code>null</code></td>
           </tr>
           <tr>
             <td>ignoreCase</td>
@@ -536,7 +536,7 @@
             <td>fileExtensions</td>
             <td>file type extension of files to process</td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td><code>{}</code></td>
+            <td>all files</td>
           </tr>
         </table>
       </subsection>
@@ -653,13 +653,13 @@
           <tr>
             <td>folderPattern</td>
             <td>Regular expression to match the folder path against.</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
             <td><code>null</code></td>
           </tr>
           <tr>
             <td>fileNamePattern</td>
             <td>Regular expression to match the file name against.</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
             <td><code>null</code></td>
           </tr>
           <tr>
@@ -680,7 +680,7 @@
             <td>File type extension of files to process. If this is specified, then
             only files that match these types are examined with the other patterns.</td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td><code>{}</code></td>
+            <td>all files</td>
           </tr>
         </table>
       </subsection>
@@ -817,15 +817,15 @@
           <tr>
             <td>format</td>
             <td>illegal pattern</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^$</code> (empty)</td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>&quot;$.&quot;</code></td>
           </tr>
           <tr>
             <td>message</td>
             <td>message which is used to notify about violations,
             if empty then default(hard-coded) message is used.</td>
             <td><a href="property_types.html#string">String</a></td>
-            <td><code>&quot;&quot;</code>(empty)</td>
+            <td><code>null</code></td>
           </tr>
           <tr>
             <td>ignoreCase</td>
@@ -849,7 +849,7 @@
             <td>fileExtensions</td>
             <td>file type extension of files to process</td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td><code>{}</code></td>
+            <td>all files</td>
           </tr>
         </table>
       </subsection>
@@ -959,15 +959,15 @@
           <tr>
             <td>format</td>
             <td>illegal pattern</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^$</code> (empty)</td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>&quot;$.&quot;</code></td>
           </tr>
           <tr>
             <td>message</td>
             <td>message which is used to notify about violations,
             if empty then default(hard-coded) message is used.</td>
             <td><a href="property_types.html#string">String</a></td>
-            <td><code>&quot;&quot;</code>(empty)</td>
+            <td><code>null</code></td>
           </tr>
           <tr>
             <td>ignoreCase</td>

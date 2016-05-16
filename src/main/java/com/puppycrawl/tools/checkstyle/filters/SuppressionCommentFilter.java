@@ -87,10 +87,10 @@ public class SuppressionCommentFilter
     private boolean checkCPP = true;
 
     /** Parsed comment regexp that turns checkstyle reporting off. */
-    private Pattern offRegexp;
+    private Pattern offCommentFormat;
 
     /** Parsed comment regexp that turns checkstyle reporting on. */
-    private Pattern onRegexp;
+    private Pattern onCommentFormat;
 
     /** The check format to suppress. */
     private String checkFormat;
@@ -105,7 +105,7 @@ public class SuppressionCommentFilter
      * and FileContentsHolder are reassigned to the next FileContents,
      * at which time filtering for the current FileContents is finished.
      */
-    private WeakReference<FileContents> fileContentsReference = new WeakReference<>(null);
+    private WeakReference<FileContents> fileContents = new WeakReference<>(null);
 
     /**
      * Constructs a SuppressionCommentFilter.
@@ -113,34 +113,32 @@ public class SuppressionCommentFilter
      * to defaults.
      */
     public SuppressionCommentFilter() {
-        setOnCommentFormat(DEFAULT_ON_FORMAT);
-        setOffCommentFormat(DEFAULT_OFF_FORMAT);
+        setOnCommentFormat(Pattern.compile(DEFAULT_ON_FORMAT));
+        setOffCommentFormat(Pattern.compile(DEFAULT_OFF_FORMAT));
         checkFormat = DEFAULT_CHECK_FORMAT;
     }
 
     /**
      * Set the format for a comment that turns off reporting.
-     * @param format a {@code String} value.
-     * @throws ConversionException if unable to create Pattern object.
+     * @param pattern a pattern.
      */
-    public final void setOffCommentFormat(String format) {
-        offRegexp = CommonUtils.createPattern(format);
+    public final void setOffCommentFormat(Pattern pattern) {
+        offCommentFormat = pattern;
     }
 
     /**
      * Set the format for a comment that turns on reporting.
-     * @param format a {@code String} value
-     * @throws ConversionException if unable to create Pattern object.
+     * @param pattern a pattern.
      */
-    public final void setOnCommentFormat(String format) {
-        onRegexp = CommonUtils.createPattern(format);
+    public final void setOnCommentFormat(Pattern pattern) {
+        onCommentFormat = pattern;
     }
 
     /**
      * @return the FileContents for this filter.
      */
     public FileContents getFileContents() {
-        return fileContentsReference.get();
+        return fileContents.get();
     }
 
     /**
@@ -148,7 +146,7 @@ public class SuppressionCommentFilter
      * @param fileContents the FileContents for this filter.
      */
     public void setFileContents(FileContents fileContents) {
-        fileContentsReference = new WeakReference<>(fileContents);
+        this.fileContents = new WeakReference<>(fileContents);
     }
 
     /**
@@ -269,12 +267,12 @@ public class SuppressionCommentFilter
      * @param column the column number of text.
      */
     private void tagCommentLine(String text, int line, int column) {
-        final Matcher offMatcher = offRegexp.matcher(text);
+        final Matcher offMatcher = offCommentFormat.matcher(text);
         if (offMatcher.find()) {
             addTag(offMatcher.group(0), line, column, false);
         }
         else {
-            final Matcher onMatcher = onRegexp.matcher(text);
+            final Matcher onMatcher = onCommentFormat.matcher(text);
             if (onMatcher.find()) {
                 addTag(onMatcher.group(0), line, column, true);
             }
@@ -340,27 +338,27 @@ public class SuppressionCommentFilter
             try {
                 if (reportingOn) {
                     format = CommonUtils.fillTemplateWithStringsByRegexp(
-                            filter.checkFormat, text, filter.onRegexp);
+                            filter.checkFormat, text, filter.onCommentFormat);
                     tagCheckRegexp = Pattern.compile(format);
                     if (filter.messageFormat == null) {
                         tagMessageRegexp = null;
                     }
                     else {
                         format = CommonUtils.fillTemplateWithStringsByRegexp(
-                                filter.messageFormat, text, filter.onRegexp);
+                                filter.messageFormat, text, filter.onCommentFormat);
                         tagMessageRegexp = Pattern.compile(format);
                     }
                 }
                 else {
                     format = CommonUtils.fillTemplateWithStringsByRegexp(
-                            filter.checkFormat, text, filter.offRegexp);
+                            filter.checkFormat, text, filter.offCommentFormat);
                     tagCheckRegexp = Pattern.compile(format);
                     if (filter.messageFormat == null) {
                         tagMessageRegexp = null;
                     }
                     else {
                         format = CommonUtils.fillTemplateWithStringsByRegexp(
-                                filter.messageFormat, text, filter.offRegexp);
+                                filter.messageFormat, text, filter.offCommentFormat);
                         tagMessageRegexp = Pattern.compile(format);
                     }
                 }

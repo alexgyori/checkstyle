@@ -196,10 +196,10 @@ public class JavadocMethodCheck extends AbstractTypeAwareCheck {
 
     /**
      * Set regex for matching method names to ignore.
-     * @param regex regex for matching method names.
+     * @param pattern a pattern.
      */
-    public void setIgnoreMethodNamesRegex(String regex) {
-        ignoreMethodNamesRegex = CommonUtils.createPattern(regex);
+    public void setIgnoreMethodNamesRegex(Pattern pattern) {
+        ignoreMethodNamesRegex = pattern;
     }
 
     /**
@@ -229,19 +229,19 @@ public class JavadocMethodCheck extends AbstractTypeAwareCheck {
     /**
      * Set the scope.
      *
-     * @param from a {@code String} value
+     * @param scope a scope.
      */
-    public void setScope(String from) {
-        scope = Scope.getInstance(from);
+    public void setScope(Scope scope) {
+        this.scope = scope;
     }
 
     /**
      * Set the excludeScope.
      *
-     * @param excludeScope a {@code String} value
+     * @param scope a scope.
      */
-    public void setExcludeScope(String excludeScope) {
-        this.excludeScope = Scope.getInstance(excludeScope);
+    public void setExcludeScope(Scope scope) {
+        this.excludeScope = scope;
     }
 
     /**

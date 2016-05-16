@@ -844,8 +844,8 @@ case 5:
               Regular expression to match the relief comment that suppresses
               the warning about a fall through.
             </td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>fallthru|falls? ?through</code></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"fallthru|falls? ?through"</code></td>
           </tr>
         </table>
       </subsection>
@@ -1063,8 +1063,8 @@ case 5:
           <tr>
             <td>ignoreFormat</td>
             <td>pattern for names of variables and parameters to ignore</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td>(not applied)</td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>null</code></td>
           </tr>
 
           <tr>
@@ -1289,8 +1289,8 @@ class SomeClass
             <td>illegalClassNames</td>
             <td>exception class names to reject</td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td><code>&quot;java.lang.Exception,
-            java.lang.Throwable, java.lang.RuntimeException&quot;</code></td>
+            <td><code>java.lang.Exception,
+            java.lang.Throwable, java.lang.RuntimeException</code></td>
           </tr>
         </table>
       </subsection>
@@ -1477,8 +1477,8 @@ class SomeClass
             <td>throw class names to reject</td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
             <td>
-              <code>&quot;java.lang.Throwable,
-              java.lang.Error, java.lang.RuntimeException&quot;</code>
+              <code>java.lang.Throwable,
+              java.lang.Error, java.lang.RuntimeException</code>
             </td>
           </tr>
           <tr>
@@ -1665,8 +1665,8 @@ class SomeClass
           <tr>
             <td>format</td>
             <td>illegal pattern</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^$</code> (empty)</td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>&quot;$^&quot; (empty)</code></td>
           </tr>
           <tr>
             <td>ignoreCase</td>
@@ -1679,7 +1679,7 @@ class SomeClass
             <td>Message which is used to notify about violations;
             if empty then the default message is used.</td>
             <td><a href="property_types.html#string">String</a></td>
-            <td><code>&quot;&quot;</code>(empty)</td>
+            <td><code>&quot;&quot;</code> (empty)</td>
           </tr>
           <tr>
             <td>tokens</td>
@@ -1786,33 +1786,36 @@ class SomeClass
             <td>Classes that should not be used as types in variable
             declarations, return values or parameters</td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td>&quot;java.util.HashSet, java.util.HashMap, java.util.LinkedHashMap,
+            <td>java.util.HashSet, java.util.HashMap, java.util.LinkedHashMap,
             java.util.LinkedHashSet, java.util.TreeSet,
-            java.util.TreeMap&quot;</td>
+            java.util.TreeMap</td>
           </tr>
           <tr>
           <td>legalAbstractClassNames</td>
           <td>Abstract classes that may be used as types. </td>
           <td><a href="property_types.html#stringSet">String Set</a></td>
-          <td/>
+          <td>{}</td>
         </tr>
         <tr>
             <td>ignoredMethodNames</td>
             <td>Methods that should not be checked.</td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td>&quot;getInitialContext, getEnvironment&quot; </td>
+            <td>getInitialContext, getEnvironment</td>
           </tr>
           <tr>
             <td>format</td>
             <td>Pattern for illegal class names.</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^(.*[\\.])?Abstract.*$</code></td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"^(.*[.])?Abstract.*$"</code></td>
           </tr>
           <tr>
             <td>memberModifiers</td>
             <td>Check methods and fields with only corresponding modifiers.</td>
-            <td><a href="property_types.html#stringSet">List of tokens</a></td>
-            <td><code>null</code></td>
+            <td>
+              subset of tokens
+              <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html">TokenTypes</a>
+            </td>
+            <td><code>{}</code></td>
           </tr>
           <tr>
             <td>tokens</td>
@@ -2005,7 +2008,7 @@ static final Integer ANSWER_TO_THE_ULTIMATE_QUESTION_OF_LIFE = new Integer(42);
             <td>ignoreNumbers</td>
             <td>non-magic numbers</td>
             <td><a href="property_types.html#intSet">Number Set</a></td>
-            <td>-1, 0, 1, 2</td>
+            <td>-1.0, 0.0, 1.0, 2.0</td>
           </tr>
           <tr>
             <td>ignoreHashCodeMethod</td>
@@ -2032,19 +2035,19 @@ static final Integer ANSWER_TO_THE_ULTIMATE_QUESTION_OF_LIFE = new Integer(42);
                 <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html">TokenTypes</a>
               </td>
               <td>
-                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#ASSIGN">ASSIGN</a>,
-                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#ARRAY_INIT">ARRAY_INIT</a>,
-                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#EXPR">EXPR</a>,
-                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#UNARY_PLUS">UNARY_PLUS</a>,
-                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#UNARY_MINUS">UNARY_MINUS</a>,
                 <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#TYPECAST">TYPECAST</a>,
-                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#ELIST">ELIST</a>,
-                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#LITERAL_NEW">LITERAL_NEW</a>,
                 <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#METHOD_CALL">METHOD_CALL</a>,
+                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#EXPR">EXPR</a>,
+                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#ARRAY_INIT">ARRAY_INIT</a>,
+                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#UNARY_MINUS">UNARY_MINUS</a>,
+                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#UNARY_PLUS">UNARY_PLUS</a>,
+                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#ELIST">ELIST</a>,
                 <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#STAR">STAR</a>,
-                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#DIV">DIV</a>,
+                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#ASSIGN">ASSIGN</a>,
                 <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#PLUS">PLUS</a>,
-                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#MINUS">MINUS</a>.
+                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#MINUS">MINUS</a>,
+                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#DIV">DIV</a>,
+                <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#LITERAL_NEW">LITERAL_NEW</a>
               </td>
           </tr>
           <tr>
@@ -2458,8 +2461,8 @@ class MyClass {
             <td>
               Regular expression pattern for ignored strings (with quotation marks)
             </td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^""$</code> (ignore empty strings)</td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"^""$"</code></td>
           </tr>
           <tr>
             <td>ignoreOccurrenceContext</td>
@@ -2474,7 +2477,6 @@ class MyClass {
             </td>
             <td>
               <code>ANNOTATION</code>
-              (ignore strings inside the context of an annotation)
             </td>
           </tr>
         </table>
@@ -3503,8 +3505,8 @@ public static class B {
           <tr>
             <td>format</td>
             <td>method names to ignore</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td><code>^equals$</code> (empty)</td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>"^equals$"</code></td>
           </tr>
           <tr>
             <td>tokens</td>
@@ -4103,8 +4105,8 @@ if (&quot;something&quot;.equals(x))
           <tr>
             <td>ignoreVariablePattern</td>
             <td>pattern for ignoring the distance calculation</td>
-            <td><a href="property_types.html#regexp">regular expression</a></td>
-            <td>(not applied)</td>
+            <td><a href="property_types.html#regexp">Regular Expression</a></td>
+            <td><code>""</code></td>
           </tr>
 
           <tr>

@@ -63,15 +63,14 @@ line 5: ////////////////////////////////////////////////////////////////////
           <tr>
             <td>headerFile</td>
             <td>name of the file containing the required header</td>
-            <td><a href="property_types.html#string">string</a></td>
+            <td><a href="property_types.html#string">String</a></td>
             <td><code>null</code></td>
           </tr>
           <tr>
             <td>charset</td>
             <td>character encoding to use when reading the headerFile</td>
-            <td><a href="property_types.html#string">string</a></td>
-            <td>the charset property of the parent
-            <a href="config.html#Checker">Checker</a> module</td>
+            <td><a href="property_types.html#string">String</a></td>
+            <td><code>&quot;UTF-8&quot;</code></td>
           </tr>
           <tr>
             <td>header</td>
@@ -80,8 +79,8 @@ line 5: ////////////////////////////////////////////////////////////////////
               must be separated by the string <code>&quot;\n&quot;</code> (even on platforms with a
               different line separator), see examples below.
             </td>
-            <td><a href="property_types.html#string">string</a></td>
-            <td><code>null</code></td>
+            <td><a href="property_types.html#string">String</a></td>
+            <td><code>&quot;&quot;</code> (empty)</td>
           </tr>
           <tr>
             <td>ignoreLines</td>
@@ -93,7 +92,7 @@ line 5: ////////////////////////////////////////////////////////////////////
             <td>fileExtensions</td>
             <td>file type extension of files to process</td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td><code>{}</code></td>
+            <td>all files</td>
           </tr>
         </table>
       </subsection>
@@ -261,15 +260,14 @@ line 6: ^\W*$
           <tr>
             <td>headerFile</td>
             <td>name of the file containing the required header</td>
-            <td><a href="property_types.html#string">string</a></td>
+            <td><a href="property_types.html#string">String</a></td>
             <td><code>null</code></td>
           </tr>
           <tr>
             <td>charset</td>
             <td>character encoding to use when reading the headerFile</td>
-            <td><a href="property_types.html#string">string</a></td>
-            <td>the charset property of the parent
-            <a href="config.html#Checker">Checker</a> module</td>
+            <td><a href="property_types.html#string">String</a></td>
+            <td><code>&quot;UTF-8&quot;</code></td>
           </tr>
           <tr>
             <td>header</td>
@@ -279,8 +277,8 @@ line 6: ^\W*$
               different line separator), and regular expressions must not span
               multiple lines.
             </td>
-            <td><a href="property_types.html#string">string</a></td>
-            <td><code>null</code></td>
+            <td><a href="property_types.html#string">String</a></td>
+            <td><code>&quot;&quot;</code> (empty)</td>
           </tr>
           <tr>
             <td>multiLines</td>
@@ -292,7 +290,7 @@ line 6: ^\W*$
             <td>fileExtensions</td>
             <td>file type extension of files to process</td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
-            <td><code>{}</code></td>
+            <td>all files</td>
           </tr>
         </table>
       </subsection>

@@ -23,9 +23,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.List;
-import java.util.Locale;
-
-import org.apache.commons.beanutils.ConversionException;
 
 import com.google.common.io.Closeables;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
@@ -100,20 +97,10 @@ public class NewlineAtEndOfFileCheck
     /**
      * Sets the line separator to one of 'crlf', 'lf','cr', 'lf_cr_crlf' or 'system'.
      *
-     * @param lineSeparatorParam The line separator to set
-     * @throws IllegalArgumentException If the specified line separator is not
-     *         one of 'crlf', 'lf', 'cr', 'lf_cr_crlf' or 'system'
+     * @param option The line separator to set.
      */
-    public void setLineSeparator(String lineSeparatorParam) {
-        try {
-            lineSeparator =
-                Enum.valueOf(LineSeparatorOption.class, lineSeparatorParam.trim()
-                    .toUpperCase(Locale.ENGLISH));
-        }
-        catch (IllegalArgumentException iae) {
-            throw new ConversionException("unable to parse " + lineSeparatorParam,
-                iae);
-        }
+    public void setLineSeparator(LineSeparatorOption option) {
+        lineSeparator = option;
     }
 
     /**

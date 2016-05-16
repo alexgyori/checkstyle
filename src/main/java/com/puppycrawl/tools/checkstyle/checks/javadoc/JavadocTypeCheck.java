@@ -118,36 +118,36 @@ public class JavadocTypeCheck
 
     /**
      * Sets the scope to check.
-     * @param from string to set scope from
+     * @param scope a scope.
      */
-    public void setScope(String from) {
-        scope = Scope.getInstance(from);
+    public void setScope(Scope scope) {
+        this.scope = scope;
     }
 
     /**
      * Set the excludeScope.
-     * @param excludeScope a {@code String} value
+     * @param scope a scope.
      */
-    public void setExcludeScope(String excludeScope) {
-        this.excludeScope = Scope.getInstance(excludeScope);
+    public void setExcludeScope(Scope scope) {
+        this.excludeScope = scope;
     }
 
     /**
      * Set the author tag pattern.
-     * @param format a {@code String} value
+     * @param pattern a pattern.
      */
-    public void setAuthorFormat(String format) {
-        authorFormat = format;
-        authorFormatPattern = CommonUtils.createPattern(format);
+    public void setAuthorFormat(Pattern pattern) {
+        authorFormat = pattern.pattern();
+        authorFormatPattern = pattern;
     }
 
     /**
      * Set the version format pattern.
-     * @param format a {@code String} value
+     * @param pattern a pattern.
      */
-    public void setVersionFormat(String format) {
-        versionFormat = format;
-        versionFormatPattern = CommonUtils.createPattern(format);
+    public void setVersionFormat(Pattern pattern) {
+        versionFormat = pattern.pattern();
+        versionFormatPattern = pattern;
     }
 
     /**
