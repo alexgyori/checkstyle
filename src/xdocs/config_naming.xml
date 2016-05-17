@@ -60,25 +60,25 @@
           <tr>
             <td>allowedAbbreviations</td>
             <td>list of abbreviations that must be skipped for checking.
-            Abbreviations should be separated by comma, no spaces are allowed.</td>
+            Abbreviations should be separated by comma.</td>
             <td><a href="property_types.html#stringSet">String Set</a></td>
             <td>null</td>
           </tr>
           <tr>
             <td>ignoreFinal</td>
-            <td>allow to skip variables with final modifier.</td>
+            <td>allow to skip variables with <code>final</code> modifier.</td>
             <td><a href="property_types.html#boolean">Boolean</a></td>
             <td>true</td>
           </tr>
           <tr>
             <td>ignoreStatic</td>
-            <td>allow to skip variables with static modifier.</td>
+            <td>allow to skip variables with <code>static</code> modifier.</td>
             <td><a href="property_types.html#boolean">Boolean</a></td>
             <td>true</td>
           </tr>
           <tr>
             <td>ignoreOverriddenMethods</td>
-            <td>Allows to ignore methods tagged with @Override annotation
+            <td>Allows to ignore methods tagged with <code>@Override</code> annotation
             (that usually mean inherited name).</td>
             <td><a href="property_types.html#boolean">Boolean</a></td>
             <td>true</td>
@@ -115,10 +115,10 @@
       <subsection name="Examples">
        <p>
          Default configuration
-         <source>
-&lt;module name="AbbreviationAsWordInName"/&gt;
-         </source>
        </p>
+       <source>
+&lt;module name="AbbreviationAsWordInName"/&gt;
+       </source>
        <p>
           To configure to check variables and classes identifiers,
           do not ignore variables with static modifier and allow

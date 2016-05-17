@@ -40,36 +40,50 @@ import com.puppycrawl.tools.checkstyle.utils.CommonUtils;
  * Google Style Guide</a> to get to know how to avoid long abbreviations in names.
  * </p>
  * <p>
- * Option {@code allowedAbbreviationLength} indicates on the allowed amount of capital
- * letters in abbreviations in the classes, interfaces,
- * variables and methods names. Default value is '3'.
+ * Option {@code allowedAbbreviationLength} - indicates on the allowed amount of capital
+ * letters in targeted identifiers (abbreviations in the classes, interfaces,
+ * variables and methods names, ... ). Default value is {@code 3}.
  * </p>
  * <p>
  * Option {@code allowedAbbreviations} - list of abbreviations that
- * must be skipped for checking. Abbreviations should be separated by comma,
- * no spaces are allowed.
+ * must be skipped for checking. Abbreviations should be separated by comma.
+ * Default value is {@code null}.
  * </p>
  * <p>
- * Option {@code ignoreFinal} allow to skip variables with {@code final} modifier.
+ * Option {@code ignoreFinal} - allow to skip variables with {@code final} modifier.
  * Default value is {@code true}.
  * </p>
  * <p>
- * Option {@code ignoreStatic} allow to skip variables with {@code static} modifier.
+ * Option {@code ignoreStatic} - allow to skip variables with {@code static} modifier.
  * Default value is {@code true}.
  * </p>
  * <p>
- * Option {@code ignoreOverriddenMethod} - Allows to
+ * Option {@code ignoreOverriddenMethods} - Allows to
  * ignore methods tagged with {@code @Override} annotation
  * (that usually mean inherited name). Default value is {@code true}.
  * </p>
+ * <p>
+ * Option {@code tokens} - tokens to check Default value is:
+ * <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#CLASS_DEF">CLASS_DEF</a>,
+ * <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#INTERFACE_DEF">INTERFACE_DEF</a>,
+ * <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#ENUM_DEF">ENUM_DEF</a>,
+ * <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#ANNOTATION_DEF">ANNOTATION_DEF</a>,
+ * <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#ANNOTATION_FIELD_DEF">ANNOTATION_FIELD_DEF</a>,
+ * <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#PARAMETER_DEF">PARAMETER_DEF</a>,
+ * <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#VARIABLE_DEF">VARIABLE_DEF</a>,
+ * <a href="apidocs/com/puppycrawl/tools/checkstyle/api/TokenTypes.html#METHOD_DEF">METHOD_DEF</a>.
+ * </p>
+ * <p>
  * Default configuration
+ * </p>
  * <pre>
- * &lt;module name="AbbreviationAsWordInName" /&gt;
+ * &lt;module name="AbbreviationAsWordInName"/&gt;
  * </pre>
  * <p>
  * To configure to check variables and classes identifiers, do not ignore
  * variables with static modifier
- * and allow no abbreviations (enforce camel case phrase) but allow XML and URL abbreviations.
+ * and allow no abbreviations (enforce camel case phrase) and allow no abbreviations to use (camel
+ * case phrase) and allow XML and URL abbreviations.
  * </p>
  * <pre>
  * &lt;module name="AbbreviationAsWordInName"&gt;
@@ -95,24 +109,29 @@ public class AbbreviationAsWordInNameCheck extends AbstractCheck {
     private static final int DEFAULT_ALLOWED_ABBREVIATIONS_LENGTH = 3;
 
     /**
-     * Variable indicates on the allowed amount of capital letters in
-     * abbreviations in the classes, interfaces, variables and methods names.
+     * <b>Check Property</b>: indicates on the allowed amount of capital letters in
+     * targeted identifiers (abbreviations in the classes, interfaces, variables and
+     * methods names, ... ).
      */
     private int allowedAbbreviationLength =
             DEFAULT_ALLOWED_ABBREVIATIONS_LENGTH;
 
     /**
-     * Set of allowed abbreviation to ignore in check.
+     * <b>Check Property</b>: list of abbreviations that must be skipped for checking.
+     * Abbreviations should be separated by comma.
      */
     private Set<String> allowedAbbreviations = new HashSet<>();
 
-    /** Allows to ignore variables with 'final' modifier. */
+    /** <b>Check Property</b>: allow to skip variables with {@code final} modifier. */
     private boolean ignoreFinal = true;
 
-    /** Allows to ignore variables with 'static' modifier. */
+    /** <b>Check Property</b>: allow to skip variables with {@code static} modifier. */
     private boolean ignoreStatic = true;
 
-    /** Allows to ignore methods with '@Override' annotation. */
+    /**
+     * <b>Check Property</b>: Allows to ignore methods tagged with {@code @Override} annotation
+     * (that usually mean inherited name).
+     */
     private boolean ignoreOverriddenMethods = true;
 
     /**
