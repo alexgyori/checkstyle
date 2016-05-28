@@ -169,6 +169,10 @@
     <suppress checks="ExecutableStatementCount" files="Main\.java" lines="128"/>
     <suppress checks="JavaNCSS" files="Main\.java"  lines="128"/>
 
+	<!-- Double list of all our many classes, can't split -->
+	<suppress checks="JavaNCSS|ExecutableStatementCount" files="PackageObjectFactory\.java"  lines="62-720"/>
+	<suppress checks="MultipleStringLiterals" files="PackageObjectFactory\.java"  lines="66-720"/>
+
     <!-- too complex to break apart -->
     <suppress checks="CyclomaticComplexity" files="MissingOverrideCheck\.java"  lines="144"/>
     <suppress checks="ReturnCount" files="JavadocStyleCheck\.java"  lines="342"/>

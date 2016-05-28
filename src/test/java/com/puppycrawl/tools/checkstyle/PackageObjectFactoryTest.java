@@ -21,12 +21,17 @@ package com.puppycrawl.tools.checkstyle;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck;
+import com.puppycrawl.tools.checkstyle.internal.CheckUtil;
 
 /**
  * Enter a description of class PackageObjectFactoryTest.java.
@@ -58,5 +63,27 @@ public class PackageObjectFactoryTest {
                 (ConstantNameCheck) factory.createModule(
                         "com.puppycrawl.tools.checkstyle.checks.naming.ConstantName");
         assertNotNull(check);
+    }
+
+    @Test
+    public void testObjectMap() throws IOException {
+        final Map<String, String> map = PackageObjectFactory.getObjectMap();
+        final Set<Class<?>> modules = CheckUtil.getCheckstyleModules();
+
+        for (Class<?> module : modules) {
+            final String name = module.getSimpleName();
+
+//            System.out.println("    OBJECT_MAP.put(\"" + name + "\",\n            csPackage + \"" + module.getName().substring(32) + "\");");
+//            if (name.endsWith("Check")) {
+//                System.out.println("    OBJECT_MAP.put(\"" + name.substring(0, name.length() - 5) + "\",\n            csPackage + \"" + module.getName().substring(32) + "\");");
+//            }
+
+            Assert.assertEquals("simple module name must exist in object map", module.getName(),
+                    map.get(name));
+            if (name.endsWith("Check")) {
+                Assert.assertEquals("check name must exist in object map", module.getName(),
+                        map.get(name.substring(0, name.length() - 5)));
+            }
+        }
     }
 }
