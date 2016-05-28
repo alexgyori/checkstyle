@@ -717,21 +717,19 @@ public class PackageObjectFactory implements ModuleFactory {
     public Object createModule(String name) throws CheckstyleException {
         Object instance = createObjectFromMap(name);
         if (instance == null) {
-            instance = createObjectFromMap(name + "Check");
+            instance = createObjectWithIgnoringProblems(name, getAllPossibleNames(name));
             if (instance == null) {
-                instance = createObjectWithIgnoringProblems(name, getAllPossibleNames(name));
+                final String nameCheck = name + "Check";
+                instance = createObjectWithIgnoringProblems(nameCheck,
+                        getAllPossibleNames(nameCheck));
                 if (instance == null) {
-                    final String nameCheck = name + "Check";
-                    instance = createObjectWithIgnoringProblems(nameCheck, getAllPossibleNames(nameCheck));
-                    if (instance == null) {
-                        final String attemptedNames = joinPackageNamesWithClassName(name)
-                                + STRING_SEPARATOR + nameCheck + STRING_SEPARATOR
-                                + joinPackageNamesWithClassName(nameCheck);
-                        final LocalizedMessage exceptionMessage = new LocalizedMessage(0,
-                            Definitions.CHECKSTYLE_BUNDLE, UNABLE_TO_INSTANTIATE_EXCEPTION_MESSAGE,
-                            new String[] {name, attemptedNames}, null, getClass(), null);
-                        throw new CheckstyleException(exceptionMessage.getMessage());
-                    }
+                    final String attemptedNames = joinPackageNamesWithClassName(name)
+                            + STRING_SEPARATOR + nameCheck + STRING_SEPARATOR
+                            + joinPackageNamesWithClassName(nameCheck);
+                    final LocalizedMessage exceptionMessage = new LocalizedMessage(0,
+                        Definitions.CHECKSTYLE_BUNDLE, UNABLE_TO_INSTANTIATE_EXCEPTION_MESSAGE,
+                        new String[] {name, attemptedNames}, null, getClass(), null);
+                    throw new CheckstyleException(exceptionMessage.getMessage());
                 }
             }
         }
@@ -747,11 +745,11 @@ public class PackageObjectFactory implements ModuleFactory {
         final String fullPackage = OBJECT_MAP.get(className);
         final Object instance;
 
-        if (fullPackage != null) {
-            instance = createObject(className);
+        if (fullPackage == null) {
+            instance = null;
         }
         else {
-            instance = null;
+            instance = createObject(fullPackage);
         }
 
         return instance;

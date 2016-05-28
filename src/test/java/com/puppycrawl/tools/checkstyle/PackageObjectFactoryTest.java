@@ -66,17 +66,25 @@ public class PackageObjectFactoryTest {
     }
 
     @Test
+    public void testMakeCheckFromSimpleName() throws CheckstyleException {
+        final ConstantNameCheck check = (ConstantNameCheck) factory.createModule("ConstantName");
+        assertNotNull(check);
+    }
+
+    @Test
+    public void testMakeCheckFromSimpleCheckName() throws CheckstyleException {
+        final ConstantNameCheck check = (ConstantNameCheck) factory
+                .createModule("ConstantNameCheck");
+        assertNotNull(check);
+    }
+
+    @Test
     public void testObjectMap() throws IOException {
         final Map<String, String> map = PackageObjectFactory.getObjectMap();
         final Set<Class<?>> modules = CheckUtil.getCheckstyleModules();
 
         for (Class<?> module : modules) {
             final String name = module.getSimpleName();
-
-//            System.out.println("    OBJECT_MAP.put(\"" + name + "\",\n            csPackage + \"" + module.getName().substring(32) + "\");");
-//            if (name.endsWith("Check")) {
-//                System.out.println("    OBJECT_MAP.put(\"" + name.substring(0, name.length() - 5) + "\",\n            csPackage + \"" + module.getName().substring(32) + "\");");
-//            }
 
             Assert.assertEquals("simple module name must exist in object map", module.getName(),
                     map.get(name));

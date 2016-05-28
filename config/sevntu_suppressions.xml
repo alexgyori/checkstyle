@@ -56,4 +56,8 @@
     <suppress checks="IllegalCatchExtended"
               files="CheckerTest\.java"
               lines="577"/>
+
+    <!-- Double list of all our many classes, can't split -->
+    <suppress checks="MultipleStringLiteralsExtended" files="PackageObjectFactory\.java"  lines="66-720"/>
+    <suppress checks="SimpleAccessorNameNotation" files="PackageObjectFactory\.java"  lines="819"/>
 </suppressions>
