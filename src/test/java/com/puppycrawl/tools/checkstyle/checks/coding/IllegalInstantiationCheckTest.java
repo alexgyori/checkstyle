@@ -189,4 +189,12 @@ public class IllegalInstantiationCheckTest
             // it is OK
         }
     }
+
+    @Test
+    public void testClassNameConflict() throws Exception {
+        final DefaultConfiguration checkConfig = createCheckConfig(IllegalInstantiationCheck.class);
+        checkConfig.addAttribute("classes", "java.lang.Boolean");
+        final String[] expected = CommonUtils.EMPTY_STRING_ARRAY;
+        verify(checkConfig, getPath("InputIllegalInstantiationConflict.java"), expected);
+    }
 }
