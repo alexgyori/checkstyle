@@ -93,6 +93,12 @@ public class IllegalTypeCheckTest extends BaseCheckTestSupport {
     }
 
     @Test
+    public void testIgnoreMethodNames2() throws Exception {
+        final String[] expected = CommonUtils.EMPTY_STRING_ARRAY;
+        verify(checkConfig, getPath("InputIllegalTypeIgnoreMethodNames2.java"), expected);
+    }
+
+    @Test
     public void testFormat() throws Exception {
         checkConfig.addAttribute("format", "^$");
 
