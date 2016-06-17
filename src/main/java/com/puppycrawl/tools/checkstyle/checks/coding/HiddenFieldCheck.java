@@ -319,8 +319,7 @@ public class HiddenFieldCheck
      * @return true if static field is hidden from closure.
      */
     private boolean isStaticFieldHiddenFromAnonymousClass(DetailAST nameAST, String name) {
-        return isInStatic(nameAST)
-            && frame.containsStaticField(name);
+        return frame.containsStaticField(name);
     }
 
     /**
