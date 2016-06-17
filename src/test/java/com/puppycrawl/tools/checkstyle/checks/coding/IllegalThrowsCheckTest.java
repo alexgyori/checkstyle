@@ -46,6 +46,7 @@ public class IllegalThrowsCheckTest extends BaseCheckTestSupport {
             "9:51: " + getCheckMessage(MSG_KEY, "RuntimeException"),
             "14:45: " + getCheckMessage(MSG_KEY, "java.lang.RuntimeException"),
             "14:73: " + getCheckMessage(MSG_KEY, "java.lang.Error"),
+            "22:51: " + getCheckMessage(MSG_KEY, "Error"),
         };
 
         verify(checkConfig, getPath("InputIllegalThrows.java"), expected);
@@ -60,10 +61,13 @@ public class IllegalThrowsCheckTest extends BaseCheckTestSupport {
         // check that incorrect names don't break the Check
         checkConfig.addAttribute("illegalClassNames",
                 "java.lang.IOException.");
+        checkConfig.addAttribute("illegalClassNames",
+                ".IOException");
 
         final String[] expected = {
             "5:33: " + getCheckMessage(MSG_KEY, "NullPointerException"),
             "14:73: " + getCheckMessage(MSG_KEY, "java.lang.Error"),
+            "22:51: " + getCheckMessage(MSG_KEY, "Error"),
         };
 
         verify(checkConfig, getPath("InputIllegalThrows.java"), expected);
@@ -80,6 +84,7 @@ public class IllegalThrowsCheckTest extends BaseCheckTestSupport {
         final String[] expected = {
             "9:51: " + getCheckMessage(MSG_KEY, "RuntimeException"),
             "18:35: " + getCheckMessage(MSG_KEY, "Throwable"),
+            "22:51: " + getCheckMessage(MSG_KEY, "Error"),
         };
 
         verify(checkConfig, getPath("InputIllegalThrows.java"), expected);
@@ -98,6 +103,7 @@ public class IllegalThrowsCheckTest extends BaseCheckTestSupport {
         final String[] expected = {
             "5:33: " + getCheckMessage(MSG_KEY, "NullPointerException"),
             "18:35: " + getCheckMessage(MSG_KEY, "Throwable"),
+            "22:51: " + getCheckMessage(MSG_KEY, "Error"),
         };
 
         verify(checkConfig, getPath("InputIllegalThrows.java"), expected);

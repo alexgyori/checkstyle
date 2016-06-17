@@ -18,4 +18,8 @@ public class InputIllegalThrows {
     public void finalize() throws Throwable {
 
     }
+
+    public void methodThree() throws IOException, Error
+    {
+    }
 }
