@@ -43,11 +43,11 @@ public class IllegalCatchCheckTest extends BaseCheckTestSupport {
 
         final String[] expected = {
             "6:11: " + getCheckMessage(MSG_KEY, "RuntimeException"),
-            "7:11: " + getCheckMessage(MSG_KEY, "Exception"),
-            "8:11: " + getCheckMessage(MSG_KEY, "Throwable"),
-            "14:11: " + getCheckMessage(MSG_KEY, "java.lang.RuntimeException"),
-            "15:11: " + getCheckMessage(MSG_KEY, "java.lang.Exception"),
-            "16:11: " + getCheckMessage(MSG_KEY, "java.lang.Throwable"),
+            "8:11: " + getCheckMessage(MSG_KEY, "Exception"),
+            "9:11: " + getCheckMessage(MSG_KEY, "Throwable"),
+            "15:11: " + getCheckMessage(MSG_KEY, "java.lang.RuntimeException"),
+            "17:11: " + getCheckMessage(MSG_KEY, "java.lang.Exception"),
+            "18:11: " + getCheckMessage(MSG_KEY, "java.lang.Throwable"),
         };
 
         verify(checkConfig, getPath("InputIllegalCatch.java"), expected);
@@ -60,10 +60,10 @@ public class IllegalCatchCheckTest extends BaseCheckTestSupport {
                                  "java.lang.Error, java.lang.Exception, java.lang.Throwable");
 
         final String[] expected = {
-            "7:11: " + getCheckMessage(MSG_KEY, "Exception"),
-            "8:11: " + getCheckMessage(MSG_KEY, "Throwable"),
-            "15:11: " + getCheckMessage(MSG_KEY, "java.lang.Exception"),
-            "16:11: " + getCheckMessage(MSG_KEY, "java.lang.Throwable"),
+            "8:11: " + getCheckMessage(MSG_KEY, "Exception"),
+            "9:11: " + getCheckMessage(MSG_KEY, "Throwable"),
+            "17:11: " + getCheckMessage(MSG_KEY, "java.lang.Exception"),
+            "18:11: " + getCheckMessage(MSG_KEY, "java.lang.Throwable"),
         };
 
         verify(checkConfig, getPath("InputIllegalCatch.java"), expected);
@@ -78,10 +78,12 @@ public class IllegalCatchCheckTest extends BaseCheckTestSupport {
         // check that incorrect names don't break the Check
         checkConfig.addAttribute("illegalClassNames",
                 "java.lang.IOException.");
+        checkConfig.addAttribute("illegalClassNames",
+                ".IOException");
 
         final String[] expected = {
-            "7:11: " + getCheckMessage(MSG_KEY, "Exception"),
-            "15:11: " + getCheckMessage(MSG_KEY, "java.lang.Exception"),
+            "8:11: " + getCheckMessage(MSG_KEY, "Exception"),
+            "17:11: " + getCheckMessage(MSG_KEY, "java.lang.Exception"),
         };
 
         verify(checkConfig, getPath("InputIllegalCatch.java"), expected);

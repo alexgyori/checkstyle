@@ -4,6 +4,7 @@ public class InputIllegalCatch {
     public void foo() {
         try { //class names
         } catch (RuntimeException e) {
+        } catch (IOException e) {
         } catch (Exception e) {
         } catch (Throwable e) {
         }
@@ -12,6 +13,7 @@ public class InputIllegalCatch {
     public void bar() {
         try { /* fully qualified class names */
         } catch (java.lang.RuntimeException e) {
+        } catch (java.lang.IOException e) {
         } catch (java.lang.Exception e) {
         } catch (java.lang.Throwable e) {
         }
