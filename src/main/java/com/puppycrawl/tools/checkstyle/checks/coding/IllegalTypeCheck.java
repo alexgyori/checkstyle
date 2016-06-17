@@ -283,33 +283,10 @@ public final class IllegalTypeCheck extends AbstractCheck {
      * @param importAst {@link TokenTypes#IMPORT Import}
      */
     private void visitImport(DetailAST importAst) {
-        if (!isStarImport(importAst)) {
+        if (!importAst.branchContains(TokenTypes.STAR)) {
             final String canonicalName = getImportedTypeCanonicalName(importAst);
             extendIllegalClassNamesWithShortName(canonicalName);
         }
-    }
-
-    /**
-     * Checks if current import is star import. E.g.:
-     * <p>
-     * {@code
-     * import java.util.*;
-     * }
-     * </p>
-     * @param importAst {@link TokenTypes#IMPORT Import}
-     * @return true if it is star import
-     */
-    private static boolean isStarImport(DetailAST importAst) {
-        boolean result = false;
-        DetailAST toVisit = importAst;
-        while (toVisit != null) {
-            toVisit = getNextSubTreeNode(toVisit, importAst);
-            if (toVisit != null && toVisit.getType() == TokenTypes.STAR) {
-                result = true;
-                break;
-            }
-        }
-        return result;
     }
 
     /**
