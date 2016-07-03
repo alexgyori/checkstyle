@@ -304,9 +304,8 @@ public class Checker extends AutomaticBean implements MessageDispatcher {
      * Processes a file with all FileSetChecks.
      * @param file a file to process.
      * @return a sorted set of messages to be logged.
-     * @throws CheckstyleException if error condition within Checkstyle occurs.
      */
-    private SortedSet<LocalizedMessage> processFile(File file) throws CheckstyleException {
+    private SortedSet<LocalizedMessage> processFile(File file) {
         final SortedSet<LocalizedMessage> fileMessages = new TreeSet<>();
         try {
             final FileText theText = new FileText(file.getAbsoluteFile(), charset);
@@ -314,11 +313,11 @@ public class Checker extends AutomaticBean implements MessageDispatcher {
                 fileMessages.addAll(fsc.process(file, theText));
             }
         }
-        catch (final IOException ioe) {
+        catch (final Throwable ioe) {
             LOG.debug("IOException occurred.", ioe);
             fileMessages.add(new LocalizedMessage(0,
                     Definitions.CHECKSTYLE_BUNDLE, "general.exception",
-                    new String[] {ioe.getMessage()}, null, getClass(), null));
+                    new String[] {ioe.getMessage()}, severityLevel, null, getClass(), null));
         }
         return fileMessages;
     }
