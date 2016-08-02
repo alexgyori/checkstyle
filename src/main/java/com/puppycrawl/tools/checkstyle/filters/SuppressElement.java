@@ -68,6 +68,8 @@ public class SuppressElement
     /** CSV for column number filter. */
     private String columnsCsv;
 
+    private boolean used;
+
     /**
      * Constructs a {@code SuppressElement} for a
      * file name pattern. Must either call {@link #setColumns(String)} or
@@ -126,8 +128,22 @@ public class SuppressElement
         }
     }
 
+    public boolean isUsed() {
+        return used;
+    }
+
     @Override
     public boolean accept(AuditEvent event) {
+        final boolean result = acceptEx(event);
+
+        if (!result) {
+            this.used = true;
+        }
+
+        return result;
+    }
+
+    private boolean acceptEx(AuditEvent event) {
         // reject if file or check module mismatch?
         if (isFileNameAndModuleNotMatching(event)) {
             return true;
@@ -171,5 +187,33 @@ public class SuppressElement
                 && Objects.equals(moduleId, suppressElement.moduleId)
                 && Objects.equals(linesCsv, suppressElement.linesCsv)
                 && Objects.equals(columnsCsv, suppressElement.columnsCsv);
+    }
+
+    @Override
+    public String toString() {
+        final String separator = "', ";
+        String result = "{";
+
+        if (this.filePattern != null) {
+            result += "Files: '" + this.filePattern + separator;
+        }
+        if (this.checkPattern != null) {
+            result += "Checks: '" + this.checkPattern + separator;
+        }
+        if (this.moduleId != null) {
+            result += "ID: '" + this.moduleId + separator;
+        }
+        if (this.linesCsv != null) {
+            result += "Lines: '" + this.linesCsv + separator;
+        }
+        if (this.columnsCsv != null) {
+            result += "Columns: '" + this.columnsCsv + separator;
+        }
+
+        if (result.length() > 1) {
+            result = result.substring(0, result.length() - 2);
+        }
+
+        return result + "}";
     }
 }

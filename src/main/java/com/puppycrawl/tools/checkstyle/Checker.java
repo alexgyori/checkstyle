@@ -568,4 +568,8 @@ public class Checker extends AutomaticBean implements MessageDispatcher {
             cache.clear();
         }
     }
+
+    public FilterSet getFilters() {
+        return filters;
+    }
 }

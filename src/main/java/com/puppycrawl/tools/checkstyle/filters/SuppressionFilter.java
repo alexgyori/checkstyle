@@ -140,4 +140,12 @@ public class SuppressionFilter extends AutomaticBean implements Filter, External
         }
         return suppressionSourceExists;
     }
+
+    public String getFile() {
+        return file;
+    }
+
+    public FilterSet getFilters() {
+        return filters;
+    }
 }

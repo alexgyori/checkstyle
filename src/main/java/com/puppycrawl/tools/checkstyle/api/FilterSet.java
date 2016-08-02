@@ -20,6 +20,7 @@
 package com.puppycrawl.tools.checkstyle.api;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ import com.google.common.collect.Sets;
  * @author Rick Giles
  */
 public class FilterSet
-    implements Filter {
+    implements Filter, Iterable<Filter> {
     /** Filter set. */
     private final Set<Filter> filters = Sets.newHashSet();
 
@@ -95,5 +96,10 @@ public class FilterSet
     /** Clears the FilterSet. */
     public void clear() {
         filters.clear();
+    }
+
+    @Override
+    public Iterator<Filter> iterator() {
+        return filters.iterator();
     }
 }

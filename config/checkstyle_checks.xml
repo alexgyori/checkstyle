@@ -64,6 +64,9 @@
     <property name="allowLegacy" value="false"/>
   </module>
 
+  <!-- Listeners -->
+  <module name="UnnecessarySuppressionListener"/>
+
   <!-- Miscellaneous -->
   <module name="NewlineAtEndOfFile"/>
   <module name="Translation">
