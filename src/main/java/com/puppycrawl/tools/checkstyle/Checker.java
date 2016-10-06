@@ -262,13 +262,13 @@ public class Checker extends AutomaticBean implements MessageDispatcher {
                         || !CommonUtils.matchesFileExtension(file, fileExtensions)) {
                     continue;
                 }
+                if (cache != null) {
+                    cache.put(fileName, timestamp);
+                }
                 fireFileStarted(fileName);
                 final SortedSet<LocalizedMessage> fileMessages = processFile(file);
                 fireErrors(fileName, fileMessages);
                 fireFileFinished(fileName);
-                if (cache != null && fileMessages.isEmpty()) {
-                    cache.put(fileName, timestamp);
-                }
             }
             // -@cs[IllegalCatch] There is no other way to deliver filename that was under
             // processing. See https://github.com/checkstyle/checkstyle/issues/2285
@@ -331,13 +331,18 @@ public class Checker extends AutomaticBean implements MessageDispatcher {
     @Override
     public void fireErrors(String fileName, SortedSet<LocalizedMessage> errors) {
         final String stripped = CommonUtils.relativizeAndNormalizePath(basedir, fileName);
+        boolean removeCache = false;
         for (final LocalizedMessage element : errors) {
             final AuditEvent event = new AuditEvent(this, stripped, element);
             if (filters.accept(event)) {
+                removeCache = true;
                 for (final AuditListener listener : listeners) {
                     listener.addError(event);
                 }
             }
+        }
+        if (removeCache && cache != null) {
+            cache.remove(fileName);
         }
     }
 
