@@ -714,18 +714,6 @@
             </configuration>
           </execution>
           <execution>
-            <id>add-test-source</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>add-test-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>src/test/resources</source>
-              </sources>
-            </configuration>
-          </execution>
-          <execution>
             <id>add-it-test-source</id>
             <phase>process-resources</phase>
             <goals>
@@ -734,18 +722,6 @@
             <configuration>
               <sources>
                 <source>src/it/java</source>
-              </sources>
-            </configuration>
-          </execution>
-          <execution>
-            <id>add-it-test-resource</id>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>add-test-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>src/it/resources</source>
               </sources>
             </configuration>
           </execution>
@@ -997,9 +973,11 @@
         </targetTests>
         <threads>4</threads>
         <verbose>true</verbose>
+        <!-- 
         <targetClasses>
           <param>com.puppycrawl.tools.checkstyle.checks.annotation.*</param>
         </targetClasses>
+         -->
         <excludedClasses>
           <param>com.puppycrawl.tools.checkstyle.grammars.javadoc.*</param>
           <param>com.puppycrawl.tools.checkstyle.internal.*</param>
