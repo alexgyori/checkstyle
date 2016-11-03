@@ -62,9 +62,6 @@
            local-only="true"/>
     <allow class="com.puppycrawl.tools.checkstyle.Utils"
            local-only="true"/>
-    <allow class="com.google.common.io.Closeables" local-only="true"/>
-    <allow class="com.google.common.collect.ImmutableCollection" local-only="true"/>
-    <allow class="com.google.common.collect.ImmutableMap" local-only="true"/>
   </subpackage>
 
   <subpackage name="checks">

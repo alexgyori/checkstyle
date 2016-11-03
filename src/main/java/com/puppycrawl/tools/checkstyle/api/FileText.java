@@ -38,8 +38,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.google.common.io.Closeables;
-
 /**
  * Represents the text contents of a file of arbitrary plain text type.
  * <p>
@@ -210,7 +208,14 @@ public final class FileText extends AbstractList<String> {
             }
         }
         finally {
-            Closeables.closeQuietly(reader);
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            }
+            catch (IOException ioe) {
+                // ignore
+            }
         }
         return buf.toString();
     }

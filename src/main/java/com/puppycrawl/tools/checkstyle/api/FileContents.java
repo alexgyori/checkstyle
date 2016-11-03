@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.google.common.collect.ImmutableMap;
 import com.puppycrawl.tools.checkstyle.grammars.CommentListener;
 
 /**
@@ -119,8 +118,8 @@ public final class FileContents implements CommentListener {
      * the value is the comment {@link TextBlock} at the line.
      * @return the Map of comments
      */
-    public ImmutableMap<Integer, TextBlock> getCppComments() {
-        return ImmutableMap.copyOf(cppComments);
+    public Map<Integer, TextBlock> getCppComments() {
+        return new HashMap<>(cppComments);
     }
 
     /**
@@ -161,8 +160,8 @@ public final class FileContents implements CommentListener {
      * that start at that line.
      * @return the map of comments
      */
-    public ImmutableMap<Integer, List<TextBlock>> getCComments() {
-        return ImmutableMap.copyOf(clangComments);
+    public Map<Integer, List<TextBlock>> getCComments() {
+        return new HashMap<>(clangComments);
     }
 
     /**
