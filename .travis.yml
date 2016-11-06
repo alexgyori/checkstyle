@@ -38,6 +38,7 @@ matrix:
     # NonDex (oraclejdk8)
     - jdk: oraclejdk8
       env: DESC="NonDex" CMD="mvn clean nondex:nondex" COVERAGE_CMD="" DEPLOY="false"
+
       # env:
       #   - DESC="NonDex"
       #   - CMD1="mvn --fail-never clean nondex:nondex "
