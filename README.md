@@ -1,3 +1,5 @@
+This is a fork of checkstyle.
+
 [![][travis img]][travis]
 [![][appveyor img]][appveyor]
 [![][teamcity img]][teamcity]
